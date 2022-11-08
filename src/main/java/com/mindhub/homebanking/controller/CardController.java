@@ -31,7 +31,7 @@ public class CardController {
 
     //un cliente logueado puede crear una card
     @PostMapping("/clients/current/cards")
-    public ResponseEntity<Object> createAccount(HttpSession session, @Valid @RequestParam CardType cardType, @Valid @RequestParam CardColor cardColor){
+    public ResponseEntity<Object> createCard(HttpSession session, @Valid @RequestParam CardType cardType, @Valid @RequestParam CardColor cardColor){
 
 
         Client clienteLogueado =  ((Client) session.getAttribute("client"));
@@ -49,7 +49,7 @@ public class CardController {
     }
 
     @DeleteMapping("/clients/current/cards/{number}")
-    public ResponseEntity<Object> createAccount(HttpSession session, @Valid @RequestParam String number){
+    public ResponseEntity<Object> deleteCard(HttpSession session, @Valid @RequestParam String number){
 
         Client clienteLogueado =  ((Client) session.getAttribute("client"));
 
