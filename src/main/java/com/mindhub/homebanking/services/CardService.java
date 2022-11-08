@@ -50,7 +50,7 @@ public class CardService {
 
     public String deleteCard(Client client, String number) {
 
-       // List<Card> cardFiltradas = client.getCards().stream().filter(card -> card.getNumber()==number).collect(Collectors.toList());
+       List<Card> cardFiltradas = client.getCards().stream().filter(card -> card.getNumber()==number).collect(Collectors.toList());
         return "mensaje.exito";
     }
 }
