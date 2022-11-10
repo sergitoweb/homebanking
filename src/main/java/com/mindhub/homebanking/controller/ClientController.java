@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -73,7 +73,7 @@ public class ClientController {
     @GetMapping("/current/cards")
     public Set<Card> getClientCard(HttpSession session) {
 
-        return ((Client) session.getAttribute("client")).getCards();
+        return ((Client) session.getAttribute("client")).getCards().stream().filter(card -> card.isActive() == true).collect(Collectors.toSet());
     }
 
 }

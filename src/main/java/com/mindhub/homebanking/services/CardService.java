@@ -2,11 +2,14 @@ package com.mindhub.homebanking.services;
 
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.CardRepository;
+import com.mindhub.homebanking.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.mindhub.homebanking.utils.CardUtils.getCardCvv;
@@ -17,6 +20,12 @@ public class CardService {
 
     @Autowired
     private CardRepository cardRepository;
+
+    @Autowired
+    private HttpSession session;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     public String agregarCard(Client client, CardColor color, CardType type) {
 
@@ -50,7 +59,14 @@ public class CardService {
 
     public String deleteCard(Client client, String number) {
 
-       List<Card> cardFiltradas = client.getCards().stream().filter(card -> card.getNumber()==number).collect(Collectors.toList());
+        Set<Card> cardFiltradas = client.getCards().stream().filter(card -> card.getNumber().equals(number)).collect(Collectors.toSet());
+        if(cardFiltradas == null){
+            return "mensaje.card.notfound";
+        }
+
+        List<Integer> cardActualizadas = cardFiltradas.stream().map(card -> cardRepository.updateCardById(card.getId(), false)).collect(Collectors.toList());
+        Integer registrosActualizados = cardActualizadas.get(0);
+        session.setAttribute("client", clientRepository.findByEmail(client.getEmail()).orElse(null));
         return "mensaje.exito";
     }
 }
