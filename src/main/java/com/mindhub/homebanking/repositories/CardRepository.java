@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +23,8 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     @Query("SELECT c FROM Card c WHERE number=?1")
     Optional<Card> buscarPorNumero(String number);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Card c SET c.active = ?2 WHERE c.id = ?1")
+    int updateCardById(long id, boolean b);
 }

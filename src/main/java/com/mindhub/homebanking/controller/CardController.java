@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 
 @RestController
@@ -48,14 +49,13 @@ public class CardController {
         }
     }
 
-    @DeleteMapping("/clients/current/cards/{number}")
-    public ResponseEntity<Object> deleteCard(HttpSession session, @Valid @RequestParam String number){
+    @DeleteMapping("/clients/current/cards")
+    public ResponseEntity<Object> deleteCard(HttpSession session, @NotNull @RequestParam String number){
 
         Client clienteLogueado =  ((Client) session.getAttribute("client"));
 
         String result =cardService.deleteCard(clienteLogueado,number);
         if (result.equals("mensaje.exito")){
-
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()),HttpStatus.OK);
         }else{
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);
