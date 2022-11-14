@@ -2,6 +2,8 @@ package com.mindhub.homebanking.controller;
 import com.mindhub.homebanking.dtos.AccountDTO;
 import com.mindhub.homebanking.models.AccountType;
 import com.mindhub.homebanking.models.Client;
+import com.mindhub.homebanking.models.Cripto;
+import com.mindhub.homebanking.models.CriptoType;
 import com.mindhub.homebanking.services.AccountService;
 import com.mindhub.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,12 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import com.google.gson.Gson;
+
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -53,6 +60,22 @@ public class AccountController {
        }else{
            return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);
        }
+    }
+
+    @GetMapping("/crypto/{coin}") // solo puede recibir btc-usdt-dai
+    public Cripto verCotizacion(@PathVariable String coin){
+        String url = "https://criptoya.com/api/decrypto/"+coin+"/ars";
+        RestTemplate restTemplate = new RestTemplate();
+
+        //con restemplate lo capturo y convierto en string
+        String cripto = restTemplate.getForObject(url, String.class);
+
+        //con gson paso los string a cada atributo del mismo nombre...
+        Cripto data = new Gson().fromJson(cripto, Cripto.class);
+
+        data.setName(CriptoType.valueOf(coin.toUpperCase()));
+
+        return data;
     }
 
 }
