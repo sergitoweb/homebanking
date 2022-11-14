@@ -1,5 +1,6 @@
 package com.mindhub.homebanking.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -9,6 +10,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Service
 public class NotificationService extends TelegramLongPollingBot {
 
+    @Autowired
+    private TelegramIdService telegramIdService;
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -18,20 +21,30 @@ public class NotificationService extends TelegramLongPollingBot {
         // Se obtiene el id de chat del usuario
         final long chatId = update.getMessage().getChatId();
 
-        System.out.println("Escribieron en el bot " + messageTextReceived + " desde el chatId: " + chatId);
+        int resultCheck = telegramIdService.checkId(chatId);
 
+        switch (resultCheck){
+            case -1:
+                telegramIdService.setQuestionAsked(chatId,true);
+                sendMessage("Parece que no estas registrado, envia el mail de tu cliente en el banco.", chatId);
+                break;
+            case -2:
+                if(telegramIdService.setUser(chatId,messageTextReceived)){
+                    telegramIdService.setAsociated(chatId,true);
+                    sendMessage("Vinculacion exitosa",chatId);
+                }else{
+                    telegramIdService.setQuestionAsked(chatId,false);
+                    sendMessage("Algo salio mal, vuelve a iniciar la comunicacion.",chatId);
+                }
+                break;
+            case 0:
+                sendMessage("Buscando informacion",chatId);
+                break;
+            default:
 
-        // Se crea un objeto mensaje
-        SendMessage message = new SendMessage();
-        message.setChatId(chatId);
-        message.setText("Gracias por escribirnos");
-
-        try {
-            // Se envía el mensaje
-            execute(message);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
         }
+
+
 
     }
 
@@ -44,6 +57,22 @@ public class NotificationService extends TelegramLongPollingBot {
     public String getBotToken() {
         return "5743088965:AAEVfl6nZYCgQl0DMaU3TL8TgqHZgHeVknU";
     }
+
+    private void sendMessage(String message, long chatId){
+        // Se crea un objeto mensaje
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
+        sendMessage.setText(message);
+
+        try {
+            // Se envía el mensaje
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
 }
