@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -32,6 +33,21 @@ public class TransactionController {
 
 
         String result = transactionService.makeTransaction(amount,description,fromAccountNumber,toAccountNumber,(Client) session.getAttribute("client"));
+
+        if (result.equals("mensaje.exito")) {
+            return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.CREATED);
+        }else {
+            return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);
+        }
+
+    }
+    @PostMapping("/transactions/shared")
+    public ResponseEntity<Object> createSharedTransaction(HttpSession session,  @Valid @RequestParam long amount, @Valid @RequestParam String description, @Valid @RequestParam String fromAccountNumber, @Valid @RequestParam String toAccountNumber, @RequestParam int numberSharedBetwen){
+
+
+        String result = transactionService.makeTransaction(amount,description,fromAccountNumber,toAccountNumber,(Client) session.getAttribute("client"));
+        String linkPago = transactionService.makeSharedTransaction(amount,numberSharedBetwen, fromAccountNumber);
+        System.out.println(linkPago);
 
         if (result.equals("mensaje.exito")) {
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.CREATED);
