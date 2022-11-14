@@ -1,6 +1,7 @@
 package com.mindhub.homebanking.configurations;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,23 +14,21 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalTime;
 
 
 @Configuration
 public class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
-    }
 
     @Autowired
     ClientRepository clientRepository;
 
     @Autowired
     HttpSession session;
+
+    @Autowired
+    NotificationService notificationService;
 
 
     @Override
@@ -40,8 +39,16 @@ public class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdap
 
             if(client != null) {
                 session.setAttribute("client", client);
+
                 //asigna admin a todos los email que contengan @admin
                 if (client.getEmail().contains("@admin")) {
+
+                    if(client.isHasTelegram()){
+                        notificationService.sendNotification(client.getEmail(),
+                                "Hola " + client.getFirstName() + " han iniciado sesion a las " +
+                                        LocalTime.now());
+                    }
+
                     return new User(client.getEmail(), client.getPassword(),
                             AuthorityUtils.createAuthorityList("ADMIN"));
                 } else {

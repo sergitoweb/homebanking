@@ -40,6 +40,12 @@ public class Client {
     @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
     private Set<Card> cards = new HashSet<>();
 
+    @OneToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "telegramId_id")
+    private TelegramId telegramId;
+
+    private boolean hasTelegram  = false;
+
     public Client(){
 
     }
@@ -135,5 +141,20 @@ public class Client {
 
     public void setAccounts(Set<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public TelegramId getTelegramId() {
+        return telegramId;
+    }
+    public void setTelegramId(TelegramId telegramId) {
+        this.telegramId = telegramId;
+    }
+
+    public boolean isHasTelegram() {
+        return hasTelegram;
+    }
+
+    public void setHasTelegram(boolean hasTelegram) {
+        this.hasTelegram = hasTelegram;
     }
 }
