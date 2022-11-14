@@ -14,6 +14,7 @@ var app = new Vue({
     },
     methods:{
         getData: function(){
+
             axios.get("/api/clients/current/accounts")
             .then((response) => {
                 //get client ifo
@@ -83,11 +84,28 @@ var app = new Vue({
                 this.errorToats.show();
             })
         },
+            updateParams: function(){
+                    let urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('amount')) {
+                        this.amount = urlParams.get('amount');
+                    };
+                    if (urlParams.get('description')) {
+                         this.description = urlParams.get('description');
+                                        }
+                    if (urlParams.get('type')) {
+                                            this.trasnferType = urlParams.get('type');
+                                        }
+                       if (urlParams.get('accountNumber')) {
+                                               this.accountToNumber = urlParams.get('accountNumber');
+                                           }
+
+                }
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
         this.modal = new bootstrap.Modal(document.getElementById('confirModal'));
         this.okmodal = new bootstrap.Modal(document.getElementById('okModal'));
         this.getData();
+        this.updateParams();
     }
 })
