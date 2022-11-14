@@ -7,6 +7,8 @@ import com.mindhub.homebanking.repositories.TelegramIdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TelegramIdService {
 
@@ -61,6 +63,15 @@ public class TelegramIdService {
         telegramId.setAsociated(value);
         telegramIdRepository.save(telegramId);
         return;
+    }
+
+    public Client getUserTelegram(long chatId){
+        TelegramId telegramId = telegramIdRepository.findByChatId(chatId).orElse(null);
+        if(telegramId != null ){
+            return telegramId.getCliente();
+        }else{
+            return null;
+        }
     }
 
 }

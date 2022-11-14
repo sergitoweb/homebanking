@@ -1,5 +1,6 @@
 package com.mindhub.homebanking.services;
 
+import com.mindhub.homebanking.models.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -12,6 +13,9 @@ public class NotificationService extends TelegramLongPollingBot {
 
     @Autowired
     private TelegramIdService telegramIdService;
+
+    @Autowired
+    private ClientService clientService;
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -38,7 +42,8 @@ public class NotificationService extends TelegramLongPollingBot {
                 }
                 break;
             case 0:
-                sendMessage("Buscando informacion",chatId);
+                String mensajePredeterminado = "Hola " + telegramIdService.getUserTelegram(chatId).getFirstName() +"!";
+                sendMessage(mensajePredeterminado,chatId);
                 break;
             default:
 
@@ -72,7 +77,13 @@ public class NotificationService extends TelegramLongPollingBot {
         }
     }
 
-
+    public void sendNotification(String mail, String mensaje){
+        Client client = clientService.findByEmail(mail).orElse(null);
+        if(client != null){
+            sendMessage(mensaje,client.getTelegramId().getChatId());
+        }
+        return;
+    }
 
 
 }
