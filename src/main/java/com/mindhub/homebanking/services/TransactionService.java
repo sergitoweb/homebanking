@@ -98,6 +98,12 @@ public class TransactionService {
         }
     }
 
+    public String makeSharedTransaction(Long amount, int sharedAccounts, String toAccountNumber){
+        int amountPerAccount = (int) (amount /  sharedAccounts);
+        String linkPago= "http://localhost:8080/web/transfers.html?" + "amount=" + amountPerAccount + "&toAccount=" + toAccountNumber + "&description= Shared"  ;
+        return linkPago;
+    }
+
 
 
 
