@@ -40,11 +40,11 @@ public class WebAuthorization extends WebSecurityConfigurerAdapter {
         http.logout().logoutUrl("/api/logout");
 
         //valida que solo se inicie una vez con el mismo usuario.
-        http
+      /*  http
                 .sessionManagement(session -> session
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(true)
-                );
+                );*/
 
         // turn off checking for CSRF tokens
         http.csrf().disable();

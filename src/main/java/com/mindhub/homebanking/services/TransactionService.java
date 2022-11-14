@@ -55,35 +55,47 @@ public class TransactionService {
         //crear la transaccion y asignarselo a la cuenta origen
         //a la cuenta de origen le descontemos el monto de su balance
         Account accountOrigin = accountRepository.findByNumber(fromAccountNumber).orElse(null);
-        Transaction transaction = new Transaction(amount,description, LocalDateTime.now(),TransactionType.DEBIT);
-        accountOrigin.addTransaction(transaction);
-        accountOrigin.setBalance(accountOrigin.getBalance()-amount);
-
-        session.setAttribute("client",clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
-
-        transactionRepository.save(transaction);
-
-        //crear la transaccion y asignarselo a la cuenta de destino
-        //a la cuenta de destino sumarle el monto a su balance
         Account accountDestination = accountRepository.findByNumber(toAccountNumber).orElse(null);
-        Transaction transactiondestination = new Transaction(amount,description, LocalDateTime.now(),TransactionType.CREDIT);
-        accountDestination.addTransaction(transactiondestination);
-        accountDestination.setBalance(accountDestination.getBalance()+amount);
 
-        transactionRepository.save(transactiondestination);
+        if(accountOrigin.getType().equals(accountDestination.getType())) {
 
-        return "mensaje.exito";
+            Transaction transaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.DEBIT);
+            accountOrigin.addTransaction(transaction);
+            accountOrigin.setBalance(accountOrigin.getBalance() - amount);
+
+            session.setAttribute("client", clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
+
+            transactionRepository.save(transaction);
+
+            //crear la transaccion y asignarselo a la cuenta de destino
+            //a la cuenta de destino sumarle el monto a su balance
+
+            Transaction transactiondestination = new Transaction(amount, description, LocalDateTime.now(), TransactionType.CREDIT);
+            accountDestination.addTransaction(transactiondestination);
+            accountDestination.setBalance(accountDestination.getBalance() + amount);
+
+            transactionRepository.save(transactiondestination);
+
+
+            return "mensaje.exito";
+        }else{
+            return "mensaje.account.incompatible";
+        }
 
     }
 
     public boolean makeTransactionLoan(Account accountDestination,long amount, Loan loan){
 
-        Transaction transactiondestination = new Transaction(amount,loan.getName()+" loan approved.", LocalDateTime.now(),TransactionType.CREDIT);
-        accountDestination.addTransaction(transactiondestination);
-        accountDestination.setBalance(accountDestination.getBalance()+amount);
-        transactionRepository.save(transactiondestination);
+        if (accountDestination.getType().equals(AccountType.VIN)) {
+            Transaction transactiondestination = new Transaction(amount, loan.getName() + " loan approved.", LocalDateTime.now(), TransactionType.CREDIT);
+            accountDestination.addTransaction(transactiondestination);
+            accountDestination.setBalance(accountDestination.getBalance() + amount);
+            transactionRepository.save(transactiondestination);
 
-        return true;
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
