@@ -2,6 +2,7 @@ package com.mindhub.homebanking.services;
 
 import com.mindhub.homebanking.dtos.CardDTO;
 import com.mindhub.homebanking.dtos.ClientDTO;
+import com.mindhub.homebanking.models.AccountType;
 import com.mindhub.homebanking.models.Card;
 import com.mindhub.homebanking.models.CardType;
 import com.mindhub.homebanking.models.Client;
@@ -45,7 +46,9 @@ public class ClientService {
         }else{
             Client newclient = new Client(firstName, lastName, email, passwordEncoder.encode(password));
             clientRepository.save(newclient);
-            accountService.agregarCuenta(newclient);
+
+            //al momento de crear un cliente se le asigna una cuenta VIN
+            accountService.agregarCuenta(newclient, AccountType.VIN);
             return "mensaje.exito";
         }
     }

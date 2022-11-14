@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -54,10 +55,9 @@ public class ClientController {
         return clientService.getClientAccounts(id).map(ClientDTO::new).orElse(null);
     }
 
-    //muestra cliente logueado
     @GetMapping("/current")
-    public ClientDTO getClientByEmail(HttpSession session){
-        return new ClientDTO((Client) session.getAttribute("client"));
+    public ClientDTO getClientByEmail(Authentication authentication){
+        return new ClientDTO((Client) clientService.findByEmail(authentication.getName()).orElse(null));
     }
 
     //muestra las cuentas de un cliente logueado

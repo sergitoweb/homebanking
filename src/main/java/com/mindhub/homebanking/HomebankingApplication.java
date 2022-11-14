@@ -36,6 +36,7 @@ public class HomebankingApplication {
 	@Autowired
 	private CardRepository cardRepository;
 
+
 	@Bean
 	public CommandLineRunner initData(ClientRepository repository) {
 		return (args) -> {
@@ -46,10 +47,10 @@ public class HomebankingApplication {
 			Client client3 = new Client("admin", "admin", "admin@admin", passwordEncoder.encode("123"));
 
 
-			Account account1 = new Account(LocalDateTime.parse("2021-09-08T00:00:00"),10000,"VIN005");
-			Account account2 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),40000,"VIN006");
-			Account account3 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),12000,"VIN007");
-			Account account4 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),36000,"VIN008");
+			Account account1 = new Account(LocalDateTime.parse("2021-09-08T00:00:00"),10000,"VIN005",AccountType.VIN);
+			Account account2 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),40000,"VIN006",AccountType.VIN);
+			Account account3 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),12000,"VIN007",AccountType.VIN);
+			Account account4 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),36000,"VIN008",AccountType.VIN);
 
 
 			LocalDateTime ldt = LocalDateTime.parse("2025-09-08T00:00:00");
