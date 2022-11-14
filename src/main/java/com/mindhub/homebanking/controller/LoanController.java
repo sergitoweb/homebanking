@@ -5,6 +5,7 @@ import com.mindhub.homebanking.dtos.LoanDTO;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.services.ClientService;
 import com.mindhub.homebanking.services.LoanService;
+import com.mindhub.homebanking.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -28,6 +29,9 @@ public class LoanController {
     @Autowired
     private MessageSource mensajes;
 
+    @Autowired
+    private NotificationService notificationService;
+
 
     @PostMapping("/loans")
     public ResponseEntity<Object> createLoan(HttpSession session, @RequestBody LoanAplicationDTO loanAplicationDTO){
@@ -36,7 +40,10 @@ public class LoanController {
         String result = loanService.makeLoan(loanAplicationDTO, (Client) session.getAttribute("client"));
 
         if (result.equals("mensaje.exito")) {
-
+            if(((Client) session.getAttribute("client")).isHasTelegram()){
+                notificationService.sendNotification(((Client) session.getAttribute("client")).getEmail(),
+                        "El prestamo solicitado para " + loanAplicationDTO.getToAccountNumber() + " ha sido aprobado y depositado.");
+            }
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.CREATED);
         }else {
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);

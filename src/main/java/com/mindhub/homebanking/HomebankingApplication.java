@@ -38,7 +38,7 @@ public class HomebankingApplication {
 
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository repository) {
+	public CommandLineRunner initData() {
 		return (args) -> {
 			// save a couple of customers
 

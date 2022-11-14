@@ -9,6 +9,7 @@ import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,8 +28,10 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+    }
 
     @Autowired
     private AccountService accountService;
@@ -44,7 +47,7 @@ public class ClientService {
         if (clientRepository.findByEmail(firstName).orElse(null) !=  null) {
             return "mensaje.emailClient.fail";
         }else{
-            Client newclient = new Client(firstName, lastName, email, passwordEncoder.encode(password));
+            Client newclient = new Client(firstName, lastName, email, passwordEncoder().encode(password));
             clientRepository.save(newclient);
 
             //al momento de crear un cliente se le asigna una cuenta VIN
