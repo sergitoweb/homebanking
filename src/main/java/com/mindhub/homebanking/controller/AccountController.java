@@ -1,5 +1,6 @@
 package com.mindhub.homebanking.controller;
 import com.mindhub.homebanking.dtos.AccountDTO;
+import com.mindhub.homebanking.models.AccountType;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.services.AccountService;
 import com.mindhub.homebanking.services.ClientService;
@@ -38,11 +39,12 @@ public class AccountController {
         return accountService.getAccountById(id).map(AccountDTO::new).orElse(null);
     }
 
-    //un cliente logueado puede crear una cuenta
-    @PostMapping("/clients/current/accounts")
-    public ResponseEntity<Object> createAccount(HttpSession session){
+    //un cliente logueado puede crear una cuenta y debe indicar el tipo CRY o VIN
+    @PostMapping("/clients/current/accounts/{type}")
+    public ResponseEntity<Object> createAccount(HttpSession session, @PathVariable String type){
 
-        String result =  accountService.agregarCuenta((Client) session.getAttribute("client"));
+
+        String result =  accountService.agregarCuenta((Client) session.getAttribute("client"), AccountType.valueOf(type));
 
 
         if (result.equals("mensaje.exito")){

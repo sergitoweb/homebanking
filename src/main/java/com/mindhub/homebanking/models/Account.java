@@ -20,6 +20,7 @@ public class Account {
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
+    private AccountType type;
 
     private Double balance;
     @NotEmpty
@@ -32,14 +33,20 @@ public class Account {
     @OneToMany(mappedBy="account", fetch=FetchType.EAGER)
     private Set<Transaction> transactions = new HashSet<>();
 
-
-    public Account(LocalDateTime creationDate, double balance, String number) {
+    //construtor viejo, lo dejo hasta que se modifique en todos los lugares que lo usamos...
+    //este constructor lo usamos en el homebanking aplication para crear manualmente las cuentas, preguntar si queda o se borra...
+   /* public Account(LocalDateTime creationDate, double balance, String number) {
         this.creationDate = creationDate;
         this.balance = balance;
         this.number = number;
+    }*/
+
+    public Account(LocalDateTime creationDate, double balance, String number,AccountType type) {
+        this.creationDate = creationDate;
+        this.type = type;
+        this.balance = balance;
+        this.number = number;
     }
-
-
 
     public Account(){
 
@@ -93,5 +100,13 @@ public class Account {
     public void addTransaction(Transaction transaction) {
         transaction.setAccount(this);
         transactions.add(transaction);
+    }
+
+    public AccountType getType() {
+        return type;
+    }
+
+    public void setType(AccountType type) {
+        this.type = type;
     }
 }
