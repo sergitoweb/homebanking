@@ -15,6 +15,8 @@ public class SharedTransactionDTO {
     private long amount;
 
     private int clientNumber;
+
+    public String description;
     private String tokenId;
 
     private Set<String> fromAccounts = new HashSet<>();
@@ -27,6 +29,7 @@ public class SharedTransactionDTO {
         this.toAccount = sharedTransaction.getAccount().getNumber();
         this.amount = sharedTransaction.getTotalAmount();
         this.clientNumber = sharedTransaction.getClientNumber();
+        this.description = sharedTransaction.getDescription();
         this.tokenId = sharedTransaction.getTokenId();
         this.fromAccounts = sharedTransaction.getFromAccounts().stream()
                 .map(sharedTransactionAccount -> sharedTransactionAccount.getAccount().getNumber()).collect(Collectors.toSet());

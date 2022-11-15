@@ -38,7 +38,7 @@ public class SharedTransactionController {
         String result = transactionService.makeTransaction(amount,description,fromAccountNumber,toAccountNumber,(Client) session.getAttribute("client"));
 
         if (result.equals("mensaje.exito")) {
-            String linkPago = sharedTransactionService.makeSharedTransaction(amount,numberSharedBetwen, fromAccountNumber);
+            String linkPago = sharedTransactionService.makeSharedTransaction(amount,numberSharedBetwen, fromAccountNumber, description);
             System.out.println(linkPago);
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.CREATED);
         }else {
@@ -62,9 +62,13 @@ public class SharedTransactionController {
 
 
 
-    @GetMapping("/transactions/shared")
-    public SharedTransactionDTO getSharedTransaction(@RequestParam @NotNull long id){
+    @GetMapping("/transactions/shared/{id}")
+    public SharedTransactionDTO getSharedTransactionById(@PathVariable long id){
         return sharedTransactionService.findById(id);
+    }
+    @GetMapping("/transactions/shared/token/{tokenId}")
+    public SharedTransactionDTO getSharedTransactionByTokenId(@PathVariable  String tokenId){
+        return sharedTransactionService.findByTokenId(tokenId);
     }
 
 

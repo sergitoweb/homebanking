@@ -35,11 +35,11 @@ public class SharedTransactionService {
     }
 
 
-    public String makeSharedTransaction(Long amount, int sharedAccounts, String toAccountNumber){
+    public String makeSharedTransaction(Long amount, int sharedAccounts, String toAccountNumber, String description){
         long amountPerAccount = (long) (amount /  sharedAccounts);
         String tokenId = (UUID.randomUUID()).toString().toUpperCase();
         Account account = accountRepository.findByNumber(toAccountNumber).orElse(null);
-        SharedTransaction sharedTransaction = new SharedTransaction(account,amount,amountPerAccount,sharedAccounts,tokenId);
+        SharedTransaction sharedTransaction = new SharedTransaction(account,amount,amountPerAccount,sharedAccounts,tokenId,description);
         sharedTransaction = sharedTransactionRepository.save(sharedTransaction);
         accountRepository.save(account);
 
@@ -70,4 +70,7 @@ public class SharedTransactionService {
         }
     }
 
+    public SharedTransactionDTO findByTokenId(String tokenId){
+        return  new SharedTransactionDTO(sharedTransactionRepository.findByTokenId(tokenId).orElse(null));
+    }
 }
