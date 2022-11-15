@@ -30,21 +30,37 @@ public class SharedTransactionController {
     private MessageSource mensajes;
 
 
+
     @PostMapping("/transactions/shared")
     public ResponseEntity<Object> createSharedTransaction(HttpSession session, @Valid @RequestParam long amount, @Valid @RequestParam String description, @Valid @RequestParam String fromAccountNumber, @Valid @RequestParam String toAccountNumber, @RequestParam int numberSharedBetwen){
 
 
         String result = transactionService.makeTransaction(amount,description,fromAccountNumber,toAccountNumber,(Client) session.getAttribute("client"));
-        String linkPago = sharedTransactionService.makeSharedTransaction(amount,numberSharedBetwen, fromAccountNumber);
-        System.out.println(linkPago);
 
         if (result.equals("mensaje.exito")) {
+            String linkPago = sharedTransactionService.makeSharedTransaction(amount,numberSharedBetwen, fromAccountNumber);
+            System.out.println(linkPago);
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.CREATED);
         }else {
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);
         }
 
     }
+
+    @PostMapping("/transactions/shared/pay")
+    public ResponseEntity<Object> paySharedTransaction(HttpSession session, @RequestParam long id,@RequestParam String fromAccountNumber){
+
+        boolean result = sharedTransactionService.paySharedTransaction(id,fromAccountNumber,(Client) session.getAttribute("client"));
+
+        if (result) {
+            return new ResponseEntity<>(mensajes.getMessage("Pago realizado", null, LocaleContextHolder.getLocale()), HttpStatus.CREATED);
+        }else {
+            return new ResponseEntity<>(mensajes.getMessage("Pago no realizado", null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+
 
     @GetMapping("/transactions/shared")
     public SharedTransactionDTO getSharedTransaction(@RequestParam @NotNull long id){

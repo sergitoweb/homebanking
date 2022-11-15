@@ -24,7 +24,7 @@ public class SharedTransactionDTO {
     public SharedTransactionDTO(SharedTransaction sharedTransaction) {
         this.id = sharedTransaction.getId();
         this.toAccount = sharedTransaction.getAccount().getNumber();
-        this.amount = sharedTransaction.getAmount();
+        this.amount = sharedTransaction.getTotalAmount();
         this.clientNumber = sharedTransaction.getClientNumber();
         this.fromAccounts = sharedTransaction.getFromAccounts().stream()
                 .map(sharedTransactionAccount -> sharedTransactionAccount.getAccount().getNumber()).collect(Collectors.toSet());

@@ -14,7 +14,9 @@ public class SharedTransaction {
     @GenericGenerator(name="native", strategy = "native")
     private long id;
 
-    private long amount;
+    private long totalAmount;
+
+    private long parcialAmount;
 
     private int clientNumber;
 
@@ -26,21 +28,26 @@ public class SharedTransaction {
     @OneToMany(mappedBy="sharedTransaction", fetch=FetchType.EAGER)
     private Set<SharedTransactionAccount> fromAccounts = new HashSet<>();
 
+    public SharedTransaction() {
+    }
+
+    public SharedTransaction(Account account, long totalAmount, long parcialAmount, int clientNumber) {
+        this.totalAmount = totalAmount;
+        this.parcialAmount = parcialAmount;
+        this.clientNumber = clientNumber;
+        this.account = account;
+    }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public long getTotalAmount() {
+        return totalAmount;
     }
 
-    public long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(long amount) {
-        this.amount = amount;
+    public void setTotalAmount(long totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public int getClientNumber() {
@@ -70,5 +77,13 @@ public class SharedTransaction {
     public void addToAccount(SharedTransactionAccount sharedTransactionAccount){
         sharedTransactionAccount.setSharedTransaction(this);
         fromAccounts.add(sharedTransactionAccount);
+    }
+
+    public long getParcialAmount() {
+        return parcialAmount;
+    }
+
+    public void setParcialAmount(long parcialAmount) {
+        this.parcialAmount = parcialAmount;
     }
 }
