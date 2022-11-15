@@ -10,7 +10,9 @@ import com.mindhub.homebanking.repositories.SharedTransactionAccountRepository;
 import com.mindhub.homebanking.repositories.SharedTransactionRepository;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SharedTransactionService {
 
     @Autowired
@@ -51,7 +53,7 @@ public class SharedTransactionService {
         SharedTransaction sharedTransaction = sharedTransactionRepository.findById(id).orElse(null);
 
         transactionService.makeTransaction(sharedTransaction.getTotalAmount(), ("Pago compartido " + sharedTransaction.getId()),fromAccountNumber,sharedTransaction.getAccount().getNumber(),clientelogueado);
-        
+
 
         if(account != null && sharedTransaction != null){
             SharedTransactionAccount sharedTransactionAccount = new SharedTransactionAccount(account,sharedTransaction);
