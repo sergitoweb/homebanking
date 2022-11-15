@@ -2,6 +2,7 @@ package com.mindhub.homebanking.services;
 
 import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
+import com.mindhub.homebanking.models.Cripto;
 import com.mindhub.homebanking.models.MoneyType;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class CriptoService {
     private TransactionService transactionService;
 
 
-    public String comprarCripto(Client client, Long amountArsBuy, double totalAsk, MoneyType tipomoneda, String originAccount, String destinationAccount) {
+    public String comprarCripto(Client client, Long amountArsBuy, Cripto cripto, MoneyType tipomoneda, String originAccount, String destinationAccount) {
 
 
         /*
@@ -33,28 +34,10 @@ public class CriptoService {
         *   2mil ARS pero btc sale 5millones, division
         */
 
-        String debitAccount= transactionService.makeTransaction();
+        amountArsBuy = amountArsBuy/(long)cripto.getTotalAsk();
 
-/*
-        if(!accountService.validarCuenta(originAccount)){
-            return "mensaje.originAccount.invalid";
-        }
+        String debitAccount= transactionService.debitTransaction(amountArsBuy, "Buy cripto "+cripto.getName(), originAccount, client,tipomoneda);
 
-        if(!accountService.validarCuenta(client,originAccount)){
-            return "mensaje.originAccountNotLogin";
-        }
-        //pregunto si tiene fondo para cubrir lo que quiere gastar...
-        if(!accountService.validarAmount(destinationAccount,amountArsBuy)){
-            return "mensaje.accountNotFounds";
-        }
-
-        if(!accountService.validarCuenta(destinationAccount)){
-            return "mensaje.destinationAccount.invalid";
-        }*/
-
-
-
-
-        return "mensaje.exito";
+        return debitAccount;
     }
 }

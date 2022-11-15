@@ -49,12 +49,12 @@ public class CriptoController {
     }
 
     @PostMapping("/crypto/buy")
-    public ResponseEntity<Object> buyCrypto(HttpSession session, @RequestParam Long amountArsBuy,@RequestParam double totalAsk, @RequestParam String tipomoneda, @RequestParam String originAccount, @RequestParam String destinationAccount ) {
+    public ResponseEntity<Object> buyCrypto(HttpSession session, @RequestParam Long amountArsBuy,@RequestParam Cripto cripto, @RequestParam String tipomoneda, @RequestParam String originAccount, @RequestParam String destinationAccount ) {
 
         // <-- atributos: num de origen, num destino, monto a comprar, cliente,-->
 
 
-        String result =criptoService.comprarCripto((Client) session.getAttribute("client"),amountArsBuy,totalAsk,MoneyType.valueOf(tipomoneda.toUpperCase()),originAccount,destinationAccount);
+        String result =criptoService.comprarCripto((Client) session.getAttribute("client"),amountArsBuy,cripto,MoneyType.valueOf(tipomoneda.toUpperCase()),originAccount,destinationAccount);
 
         if (result.equals("mensaje.exito")){
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.OK);

@@ -22,6 +22,7 @@ public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
     public String agregarCuenta(Client client, AccountType type, MoneyType tipomoneda) {
 
         if(type == null){

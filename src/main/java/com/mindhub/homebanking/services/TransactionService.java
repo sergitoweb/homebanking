@@ -100,6 +100,38 @@ public class TransactionService {
 
 
 
+    public String debitTransaction(Long amount, String description, String fromAccountNumber, Client clientelogueado,MoneyType moneyType){
+
+        if(!accountService.validarCuenta(fromAccountNumber)){
+            return "mensaje.originAccount.invalid";
+        }
+        if(!accountService.validarCuenta(clientelogueado,fromAccountNumber)){
+            return "mensaje.originAccountNotLogin";
+        }
+        if(!accountService.validarAmount(fromAccountNumber,amount)){
+            return "mensaje.accountNotFounds";
+        }
+
+        Account accountOrigin = accountRepository.findByNumber(fromAccountNumber).orElse(null);
+
+        if(accountOrigin.getType().equals(AccountType.CRY) & accountOrigin.getTypemoney().equals(moneyType)) {
+
+            Transaction transaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.DEBIT);
+            accountOrigin.addTransaction(transaction);
+            accountOrigin.setBalance(accountOrigin.getBalance() - amount);
+
+            session.setAttribute("client", clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
+
+            transactionRepository.save(transaction);
+
+            return "mensaje.exito";
+        }else{
+            return "mensaje.account.incompatible";
+        }
+
+    }
+
+
 
 
 
