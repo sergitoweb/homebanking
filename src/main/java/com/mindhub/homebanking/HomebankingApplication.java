@@ -47,10 +47,10 @@ public class HomebankingApplication {
 			Client client3 = new Client("admin", "admin", "admin@admin", passwordEncoder.encode("123"));
 
 
-			Account account1 = new Account(LocalDateTime.parse("2021-09-08T00:00:00"),10000,"VIN005",AccountType.VIN);
-			Account account2 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),40000,"VIN006",AccountType.VIN);
-			Account account3 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),12000,"VIN007",AccountType.VIN);
-			Account account4 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),36000,"VIN008",AccountType.VIN);
+			Account account1 = new Account(LocalDateTime.parse("2021-09-08T00:00:00"),10000,"VIN005",AccountType.VIN,MoneyType.ARS);
+			Account account2 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),40000,"VIN006",AccountType.VIN,MoneyType.ARS);
+			Account account3 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),12000,"VIN007",AccountType.VIN,MoneyType.ARS);
+			Account account4 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),36000,"VIN008",AccountType.VIN,MoneyType.ARS);
 
 
 			LocalDateTime ldt = LocalDateTime.parse("2025-09-08T00:00:00");

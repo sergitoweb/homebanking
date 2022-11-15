@@ -3,7 +3,7 @@ import com.mindhub.homebanking.dtos.AccountDTO;
 import com.mindhub.homebanking.models.AccountType;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.Cripto;
-import com.mindhub.homebanking.models.CriptoType;
+import com.mindhub.homebanking.models.MoneyType;
 import com.mindhub.homebanking.services.AccountService;
 import com.mindhub.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import com.google.gson.Gson;
 
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -47,11 +46,11 @@ public class AccountController {
     }
 
     //un cliente logueado puede crear una cuenta y debe indicar el tipo CRY o VIN
-    @PostMapping("/clients/current/accounts/{type}")
-    public ResponseEntity<Object> createAccount(HttpSession session, @PathVariable String type){
+    @PostMapping("/clients/current/accounts/{type},{typeMoney}")
+    public ResponseEntity<Object> createAccount(HttpSession session, @PathVariable String type,@PathVariable String typeMoney){
 
 
-        String result =  accountService.agregarCuenta((Client) session.getAttribute("client"), AccountType.valueOf(type));
+        String result =  accountService.agregarCuenta((Client) session.getAttribute("client"), AccountType.valueOf(type),MoneyType.valueOf(typeMoney));
 
 
         if (result.equals("mensaje.exito")){
@@ -61,6 +60,7 @@ public class AccountController {
            return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);
        }
     }
+
 
     @GetMapping("/crypto/{coin}") // solo puede recibir btc-usdt-dai
     public Cripto verCotizacion(@PathVariable String coin){
@@ -73,8 +73,9 @@ public class AccountController {
         //con gson paso los string a cada atributo del mismo nombre...
         Cripto data = new Gson().fromJson(cripto, Cripto.class);
 
-        data.setName(CriptoType.valueOf(coin.toUpperCase()));
+        data.setName(MoneyType.valueOf(coin.toUpperCase()));
 
+        //cuando vaya a comprar cripto setear el tipobalance de account...
         return data;
     }
 

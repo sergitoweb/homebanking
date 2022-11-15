@@ -5,6 +5,8 @@ var app = new Vue({
         errorToats: null,
         errorMsg: null,
         type:null,
+        typeMoney:null,
+        options: []
     },
     methods:{
         getData: function(){
@@ -12,6 +14,7 @@ var app = new Vue({
             .then((response) => {
                 //get client ifo
                 this.clientInfo = response.data;
+
             })
             .catch((error)=>{
                 // handle error
@@ -31,14 +34,33 @@ var app = new Vue({
             })
         },
         create: function(){
-            var url= '/api/clients/current/accounts/' +this.type;
+            var url= '/api/clients/current/accounts/' +this.type+","+this.typeMoney;
+
             axios.post(url)
             .then(response => window.location.reload())
             .catch((error) =>{
                 this.errorMsg = error.response.data;  
                 this.errorToats.show();
             })
-        }
+        },
+
+       changeItem: function changeItem(rowId, event) {
+
+             if(event.target.value == "VIN"){
+                this.options= [
+                                           { text: 'ARS', value: 'ARS' }
+
+                                         ]
+             }else{
+
+                this.options= [
+                           { text: 'BTC', value: 'BTC' },
+                           { text: 'DAI', value: 'DAI' },
+                           { text: 'USDT', value: 'USDT' }
+                         ]
+            }
+          }
+
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));

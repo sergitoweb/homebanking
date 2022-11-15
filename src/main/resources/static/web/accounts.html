@@ -71,11 +71,23 @@
                     <div class="col">
                         <h2 class="display-6 subtitle">Accounts</h2>
                         <div>
+
+
+
                              <label v-if="clientInfo.accounts != null && clientInfo.accounts.length < 3" for="type">Type Account:</label>
-                                <select v-if="clientInfo.accounts != null && clientInfo.accounts.length < 3" id="type" v-model="type">
+                                <select v-if="clientInfo.accounts != null && clientInfo.accounts.length < 3" v-on:change="changeItem(rowId, $event)"
+                                        id="type" v-model="type">
+
                                      <option value="VIN">Current</option>
                                      <option value="CRY">Crypto</option>
                                 </select>
+
+                            <label v-if="clientInfo.accounts != null && clientInfo.accounts.length < 3" for="typeMoney">Type Money:</label>
+                            <select v-if="clientInfo.accounts != null && clientInfo.accounts.length < 3" id="typeMoney" v-model="typeMoney" >
+                                <option v-for="option in options" v-bind:value="option.value">
+                                    {{ option.text }}
+                                </option>
+                            </select>
                             <button v-if="clientInfo.accounts != null && clientInfo.accounts.length < 3" v-on:click="create" id="create" class="btn btn-sm btn-outline-success">Create</button>
                         </div>
                     </div>
@@ -85,7 +97,7 @@
                         <a class="account-link" v-bind:href="'http://localhost:8080/web/account.html?id='+account.id">
                             <div class="card border-0 account">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ account.number }}</h5>
+                                    <h5 class="card-title">{{ account.number }} - {{account.typemoney}}</h5>
                                     <p class="card-text"> {{ formatDate(account.creationDate) }}</p>
                                     <p class="text-center lead account-balance"> ${{ account.balance }} </p>
                                 </div>

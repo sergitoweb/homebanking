@@ -1,7 +1,8 @@
 package com.mindhub.homebanking.models;
 
-public enum CriptoType {
+public enum MoneyType {
     BTC,
     USDT,
-    DAI
+    DAI,
+    ARS
 }

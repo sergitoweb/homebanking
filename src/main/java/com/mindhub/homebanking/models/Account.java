@@ -38,19 +38,14 @@ public class Account {
     @OneToMany(mappedBy="account", fetch=FetchType.EAGER)
     private Set<SharedTransactionAccount> pagosSharedTransactions = new HashSet<>();
 
-    //construtor viejo, lo dejo hasta que se modifique en todos los lugares que lo usamos...
-    //este constructor lo usamos en el homebanking aplication para crear manualmente las cuentas, preguntar si queda o se borra...
-   /* public Account(LocalDateTime creationDate, double balance, String number) {
-        this.creationDate = creationDate;
-        this.balance = balance;
-        this.number = number;
-    }*/
+    private MoneyType typemoney;
 
-    public Account(LocalDateTime creationDate, double balance, String number,AccountType type) {
+    public Account(LocalDateTime creationDate, double balance, String number,AccountType type, MoneyType tipo) {
         this.creationDate = creationDate;
         this.type = type;
         this.balance = balance;
         this.number = number;
+        this.typemoney=tipo;
     }
 
     public Account(){
@@ -142,4 +137,11 @@ public class Account {
         pagosSharedTransactions.add(sharedTransactionAccount);
     }
 
+    public MoneyType getTypemoney() {
+        return typemoney;
+    }
+
+    public void setTypemoney(MoneyType typemoney) {
+        this.typemoney = typemoney;
+    }
 }

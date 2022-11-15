@@ -7,7 +7,7 @@ public class Cripto {
         private float totalBid;
         private float time;
 
-        private CriptoType name;
+        private MoneyType name;
 
     public Cripto(float ask, float totalAsk, float bid, float totalBid, float time) {
         this.ask = ask;
@@ -59,11 +59,11 @@ public class Cripto {
             this.time = time;
         }
 
-    public CriptoType getName() {
+    public MoneyType getName() {
         return name;
     }
 
-    public void setName(CriptoType name) {
+    public void setName(MoneyType name) {
         this.name = name;
     }
 }

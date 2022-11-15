@@ -2,6 +2,7 @@ package com.mindhub.homebanking.dtos;
 
 import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.AccountType;
+import com.mindhub.homebanking.models.MoneyType;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -21,12 +22,15 @@ public class AccountDTO {
 
     private Set<SharedTransactionDTO> sharedTransactions;
 
+    private MoneyType typemoney;
+
     public AccountDTO(Account account) {
         this.id = account.getId();
         this.creationDate = account.getCreationDate();
         this.balance = account.getBalance();
         this.number = account.getNumber();
         this.type = account.getType();
+        this.typemoney=account.getTypemoney();
         this.transactions = account.getTransactions().stream().map(TransactionDTO::new).collect(Collectors.toSet());
         this.sharedTransactions = account.getSharedTransactions().stream()
                 .map(sharedTransaction -> new SharedTransactionDTO(sharedTransaction)).collect(Collectors.toSet());
@@ -82,5 +86,9 @@ public class AccountDTO {
 
     public Set<SharedTransactionDTO> getSharedTransactions() {
         return sharedTransactions;
+    }
+
+    public MoneyType getTypemoney() {
+        return typemoney;
     }
 }

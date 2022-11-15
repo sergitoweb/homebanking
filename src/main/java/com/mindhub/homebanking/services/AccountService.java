@@ -4,6 +4,7 @@ import com.mindhub.homebanking.dtos.AccountDTO;
 import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.AccountType;
 import com.mindhub.homebanking.models.Client;
+import com.mindhub.homebanking.models.MoneyType;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +22,14 @@ public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
-    public String agregarCuenta(Client client, AccountType type) {
+    public String agregarCuenta(Client client, AccountType type, MoneyType tipomoneda) {
 
         if(type == null){
             return "mensaje.type.fail";
+        }
+
+        if((type.equals(AccountType.VIN) & (!tipomoneda.equals(MoneyType.ARS)))){
+            return "mensaje.typemoney.fail";
         }
 
         //si el cliente logueado tiene menos de 3 cuentas me deja crear una mas...
@@ -32,8 +37,7 @@ public class AccountService {
             //genero aleatoriamente el numero de cuenta y concateno
             String numCuenta = getAccountNumber(type);
 
-            //creamos la cuenta nueva
-            Account newAccount = new Account(LocalDateTime.now(), 0.0, numCuenta,type);
+            Account newAccount = new Account(LocalDateTime.now(), 0.0, numCuenta, type, tipomoneda);
 
             //asignamos el cliente logueado a la cuenta y viceversa
             newAccount.setClient(client);
