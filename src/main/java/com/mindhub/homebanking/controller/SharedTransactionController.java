@@ -48,9 +48,9 @@ public class SharedTransactionController {
     }
 
     @PostMapping("/transactions/shared/pay")
-    public ResponseEntity<Object> paySharedTransaction(HttpSession session, @RequestParam long id,@RequestParam String fromAccountNumber){
+    public ResponseEntity<Object> paySharedTransaction(HttpSession session, @RequestParam String tokenId,@RequestParam String fromAccountNumber){
 
-        boolean result = sharedTransactionService.paySharedTransaction(id,fromAccountNumber,(Client) session.getAttribute("client"));
+        boolean result = sharedTransactionService.paySharedTransaction(tokenId,fromAccountNumber,(Client) session.getAttribute("client"));
 
         if (result) {
             return new ResponseEntity<>(mensajes.getMessage("Pago realizado", null, LocaleContextHolder.getLocale()), HttpStatus.CREATED);

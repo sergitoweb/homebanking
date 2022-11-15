@@ -8,9 +8,10 @@ import com.mindhub.homebanking.models.SharedTransactionAccount;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.SharedTransactionAccountRepository;
 import com.mindhub.homebanking.repositories.SharedTransactionRepository;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class SharedTransactionService {
@@ -36,21 +37,22 @@ public class SharedTransactionService {
 
     public String makeSharedTransaction(Long amount, int sharedAccounts, String toAccountNumber){
         long amountPerAccount = (long) (amount /  sharedAccounts);
+        String tokenId = (UUID.randomUUID()).toString().toUpperCase();
         Account account = accountRepository.findByNumber(toAccountNumber).orElse(null);
-        SharedTransaction sharedTransaction = new SharedTransaction(account,amount,amountPerAccount,sharedAccounts);
+        SharedTransaction sharedTransaction = new SharedTransaction(account,amount,amountPerAccount,sharedAccounts,tokenId);
         sharedTransaction = sharedTransactionRepository.save(sharedTransaction);
         accountRepository.save(account);
 
-        System.out.println("Id de sharedTransaction: " + sharedTransaction.getId());
+        System.out.println("Token: " + tokenId);
 
-        String linkPago= "http://localhost:8080/web/transfers.html?" + "amount=" + amountPerAccount + "&toAccount=" + toAccountNumber + "&description= Shared"  ;
+        String linkPago= "http://localhost:8080/web/transfers.html?" + tokenId  ;
         return linkPago;
     }
 
-    public boolean paySharedTransaction(long id, String fromAccountNumber, Client clientelogueado){
+        public boolean paySharedTransaction(String tokenId, String fromAccountNumber, Client clientelogueado){
 
         Account account = accountRepository.findByNumber(fromAccountNumber).orElse(null);
-        SharedTransaction sharedTransaction = sharedTransactionRepository.findById(id).orElse(null);
+        SharedTransaction sharedTransaction = sharedTransactionRepository.findByTokenId(tokenId).orElse(null);
 
         transactionService.makeTransaction(sharedTransaction.getTotalAmount(), ("Pago compartido " + sharedTransaction.getId()),fromAccountNumber,sharedTransaction.getAccount().getNumber(),clientelogueado);
 
