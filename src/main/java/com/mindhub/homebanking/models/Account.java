@@ -5,7 +5,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,6 +31,12 @@ public class Account {
 
     @OneToMany(mappedBy="account", fetch=FetchType.EAGER)
     private Set<Transaction> transactions = new HashSet<>();
+
+    @OneToMany(mappedBy="account", fetch=FetchType.EAGER)
+    private Set<SharedTransaction> sharedTransactions = new HashSet<>();
+
+    @OneToMany(mappedBy="account", fetch=FetchType.EAGER)
+    private Set<SharedTransactionAccount> pagosSharedTransactions = new HashSet<>();
 
     //construtor viejo, lo dejo hasta que se modifique en todos los lugares que lo usamos...
     //este constructor lo usamos en el homebanking aplication para crear manualmente las cuentas, preguntar si queda o se borra...
@@ -109,4 +114,32 @@ public class Account {
     public void setType(AccountType type) {
         this.type = type;
     }
+
+
+    public Set<SharedTransaction> getSharedTransactions() {
+        return sharedTransactions;
+    }
+
+    public void setSharedTransactions(Set<SharedTransaction> sharedTransactions) {
+        this.sharedTransactions = sharedTransactions;
+    }
+
+    public void addSharedTransaction(SharedTransaction sharedTransaction){
+        sharedTransaction.setAccount(this);
+        sharedTransactions.add(sharedTransaction);
+    }
+
+    public Set<SharedTransactionAccount> getPagosSharedTransactions() {
+        return pagosSharedTransactions;
+    }
+
+    public void setPagosSharedTransactions(Set<SharedTransactionAccount> pagosSharedTransactions) {
+        this.pagosSharedTransactions = pagosSharedTransactions;
+    }
+
+    public void addPagoSharedTransaction(SharedTransactionAccount sharedTransactionAccount){
+        sharedTransactionAccount.setAccount(this);
+        pagosSharedTransactions.add(sharedTransactionAccount);
+    }
+
 }
