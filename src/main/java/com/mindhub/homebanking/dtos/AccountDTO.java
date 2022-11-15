@@ -19,6 +19,8 @@ public class AccountDTO {
 
     private Set<TransactionDTO> transactions;
 
+    private Set<SharedTransactionDTO> sharedTransactions;
+
     public AccountDTO(Account account) {
         this.id = account.getId();
         this.creationDate = account.getCreationDate();
@@ -26,7 +28,8 @@ public class AccountDTO {
         this.number = account.getNumber();
         this.type = account.getType();
         this.transactions = account.getTransactions().stream().map(TransactionDTO::new).collect(Collectors.toSet());
-
+        this.sharedTransactions = account.getSharedTransactions().stream()
+                .map(sharedTransaction -> new SharedTransactionDTO(sharedTransaction)).collect(Collectors.toSet());
     }
 
     public AccountDTO() {
@@ -75,5 +78,9 @@ public class AccountDTO {
 
     public AccountType getType() {
         return type;
+    }
+
+    public Set<SharedTransactionDTO> getSharedTransactions() {
+        return sharedTransactions;
     }
 }
