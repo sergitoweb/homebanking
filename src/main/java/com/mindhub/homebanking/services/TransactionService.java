@@ -57,7 +57,7 @@ public class TransactionService {
         Account accountOrigin = accountRepository.findByNumber(fromAccountNumber).orElse(null);
         Account accountDestination = accountRepository.findByNumber(toAccountNumber).orElse(null);
 
-        if(accountOrigin.getType().equals(accountDestination.getType())) {
+        if(accountOrigin.getType().equals(accountDestination.getType()) & accountOrigin.getTypemoney().equals(accountDestination.getTypemoney())) {
 
             Transaction transaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.DEBIT);
             accountOrigin.addTransaction(transaction);
