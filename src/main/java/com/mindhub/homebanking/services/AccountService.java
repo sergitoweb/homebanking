@@ -74,5 +74,9 @@ public class AccountService {
         return cuenta.getBalance()>=amount;
     }
 
+    public Account obtenerCuenta(String number){
+        return accountRepository.findByNumber(number).orElse(null);
+    }
+
 
 }

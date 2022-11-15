@@ -78,13 +78,6 @@
 			<version>2.12.3</version>
 		</dependency>
 
-		<!-- dependencia para convertir json de google-->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.8.5</version>
-		</dependency>
-
 
 	</dependencies>
 
