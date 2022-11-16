@@ -45,7 +45,7 @@ public class SharedTransactionService {
 
         System.out.println("Token: " + tokenId);
 
-        String linkPago= "http://localhost:8080/web/transfers.html?" + tokenId  ;
+        String linkPago= "http://localhost:8080/web/pay-shared-transfers.html?tokenId=" + tokenId  ;
         return linkPago;
     }
 

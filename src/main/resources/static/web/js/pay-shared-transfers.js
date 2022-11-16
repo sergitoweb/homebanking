@@ -2,13 +2,12 @@ var app = new Vue({
     el:"#app",
     data:{
         clientAccounts: [],
-        clientAccountsTo: [],
-        debitCards: [],
+        sharedTransfer: {},
+        tokenId: 0,
         errorToats: null,
         errorMsg: null,
         accountFromNumber: "VIN",
         accountToNumber: "VIN",
-        trasnferType: "own",
         amount: 0,
         description: ""
     },
@@ -17,31 +16,48 @@ var app = new Vue({
 
             axios.get("/api/clients/current/accounts")
             .then((response) => {
-                //get client ifo
                 this.clientAccounts = response.data;
             })
             .catch((error) => {
                 this.errorMsg = "Error getting data";
                 this.errorToats.show();
             })
+
+        },
+        getSharedTransferData: function(){
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const tokenId = urlParams.get('tokenId');
+                    this.tokenId= tokenId;
+                    axios.get(`/api/transactions/shared/token/${tokenId}`)
+                    .then((response) => {
+                        //get client ifo
+                        this.sharedTransfer = response.data;
+                        this.cargarDatos();
+                        console.log(this.sharedTransfer);
+                    })
+                    .catch((error) => {
+                        this.errorMsg = "Error getting data";
+                        this.errorToats.show();
+                    })
         },
         formatDate: function(date){
             return new Date(date).toLocaleDateString('en-gb');
         },
         checkTransfer: function(){
             if(this.accountFromNumber == "VIN"){
-                this.errorMsg = "You must select an origin account";  
+                this.errorMsg = "You must select an origin account";
                 this.errorToats.show();
             }
             else if(this.accountToNumber == "VIN"){
-                this.errorMsg = "You must select a destination account";  
+                this.errorMsg = "You must select a destination account";
                 this.errorToats.show();
+
             }else if(this.amount == 0){
-                this.errorMsg = "You must indicate an amount";  
+                this.errorMsg = "You must indicate an amount";
                 this.errorToats.show();
             }
             else if(this.description.length <= 0){
-                this.errorMsg = "You must indicate a description";  
+                this.errorMsg = "You must indicate a description";
                 this.errorToats.show();
             }else{
                 this.modal.show();
@@ -49,29 +65,20 @@ var app = new Vue({
         },
         transfer: function(){
             let config = {
-                /*headers: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                }*/
             }
             axios.post(`/api/transactions?fromAccountNumber=${this.accountFromNumber}&toAccountNumber=${this.accountToNumber}&amount=${this.amount}&description=${this.description}`)
-            .then(response => { 
+            .then(response => {
                 this.modal.hide();
                 this.okmodal.show();
             })
             .catch((error) =>{
-                this.errorMsg = error.response.data;  
+                this.errorMsg = error.response.data;
                 this.errorToats.show();
             })
         },
         changedType: function(){
             this.accountFromNumber = "VIN";
             this.accountToNumber = "VIN";
-        },
-        changedFrom: function(){
-            if(this.trasnferType == "own"){
-                this.clientAccountsTo = this.clientAccounts.filter(account => account.number != this.accountFromNumber);
-                this.accountToNumber = "VIN";
-            }
         },
         finish: function(){
             window.location.reload();
@@ -80,32 +87,21 @@ var app = new Vue({
             axios.post('/api/logout')
             .then(response => window.location.href="/web/index.html")
             .catch(() =>{
-                this.errorMsg = "Sign out failed"   
+                this.errorMsg = "Sign out failed"
                 this.errorToats.show();
             })
         },
-            updateParams: function(){
-                    let urlParams = new URLSearchParams(window.location.search);
-                    if (urlParams.get('amount')) {
-                        this.amount = urlParams.get('amount');
-                    };
-                    if (urlParams.get('description')) {
-                         this.description = urlParams.get('description');
-                                        }
-                    if (urlParams.get('type')) {
-                                            this.trasnferType = urlParams.get('type');
-                                        }
-                       if (urlParams.get('accountNumber')) {
-                                               this.accountToNumber = urlParams.get('accountNumber');
-                                           }
-
-                }
+        cargarDatos: function(){
+            this.accountToNumber= this.sharedTransfer.toAccount;
+            this.amount= this.sharedTransfer.amount;
+            this.description= this.sharedTransfer.description;
+        }
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
         this.modal = new bootstrap.Modal(document.getElementById('confirModal'));
         this.okmodal = new bootstrap.Modal(document.getElementById('okModal'));
         this.getData();
-        this.updateParams();
+        this.getSharedTransferData();
     }
 })
