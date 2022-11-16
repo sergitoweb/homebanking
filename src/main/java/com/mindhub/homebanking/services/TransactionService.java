@@ -170,14 +170,6 @@ public class TransactionService {
     }
 
 
-
-
-
-
-
-
-
-
     public boolean makeTransactionLoan(Account accountDestination,long amount, Loan loan){
 
         if (accountDestination.getType().equals(AccountType.VIN)) {
@@ -191,67 +183,5 @@ public class TransactionService {
             return false;
         }
     }
-
-/*
-
-    public String debitTransaction(Long amount, String description, String fromAccountNumber, Client clientelogueado,MoneyType moneyType){
-
-        if(!accountService.validarCuenta(fromAccountNumber)){
-            return "mensaje.originAccount.invalid";
-        }
-        if(!accountService.validarCuenta(clientelogueado,fromAccountNumber)){
-            return "mensaje.originAccountNotLogin";
-        }
-        if(!accountService.validarAmount(fromAccountNumber,amount)){
-            return "mensaje.accountNotFounds";
-        }
-
-        Account accountOrigin = accountRepository.findByNumber(fromAccountNumber).orElse(null);
-
-        if(accountOrigin.getType().equals(AccountType.VIN) & accountOrigin.getTypemoney().equals(moneyType)) {
-
-            Transaction transaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.DEBIT);
-            accountOrigin.addTransaction(transaction);
-            accountOrigin.setBalance(accountOrigin.getBalance() - amount);
-
-            session.setAttribute("client", clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
-
-            transactionRepository.save(transaction);
-
-            return "mensaje.exito";
-        }else{
-            return "mensaje.account.incompatible";
-        }
-
-    }
-
-    public String creditTransaction(Long amount, String description, String toAccountNumber, Client clientelogueado,MoneyType moneyType){
-
-        if(!accountService.validarCuenta(toAccountNumber)){
-            return "mensaje.destinationAccount.invalid";
-        }
-        if(!accountService.validarCuenta(clientelogueado,toAccountNumber)){
-            return "mensaje.originAccountNotLogin";
-        }
-
-        Account accountDestination = accountRepository.findByNumber(toAccountNumber).orElse(null);
-
-        if(accountDestination.getType().equals(AccountType.CRY) & accountDestination.getTypemoney().equals(moneyType)) {
-            Transaction transaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.CREDIT);
-            accountDestination.addTransaction(transaction);
-            accountDestination.setBalance(accountDestination.getBalance() + amount);
-            session.setAttribute("client", clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
-            transactionRepository.save(transaction);
-
-            return "mensaje.exito";
-        }else{
-            return "mensaje.account.incompatible";
-        }
-
-    }
-
-
-
-*/
 
 }
