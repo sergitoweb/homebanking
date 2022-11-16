@@ -20,6 +20,10 @@ public class SharedTransaction {
 
     private int clientNumber;
 
+    private String description;
+
+    private String tokenId;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="account_id")
@@ -31,11 +35,13 @@ public class SharedTransaction {
     public SharedTransaction() {
     }
 
-    public SharedTransaction(Account account, long totalAmount, long parcialAmount, int clientNumber) {
+    public SharedTransaction(Account account, long totalAmount, long parcialAmount, int clientNumber, String tokenId, String description) {
         this.totalAmount = totalAmount;
         this.parcialAmount = parcialAmount;
         this.clientNumber = clientNumber;
+        this.description = description;
         this.account = account;
+        this.tokenId = tokenId;
     }
 
     public long getId() {
@@ -56,6 +62,22 @@ public class SharedTransaction {
 
     public void setClientNumber(int clientNumber) {
         this.clientNumber = clientNumber;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
     }
 
     public Account getAccount() {
