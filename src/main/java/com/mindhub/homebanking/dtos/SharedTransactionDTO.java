@@ -12,7 +12,9 @@ public class SharedTransactionDTO {
 
     private String toAccount;
 
-    private long amount;
+    private long totalAmount;
+
+    private long parcialAmount;
 
     private int clientNumber;
 
@@ -27,7 +29,8 @@ public class SharedTransactionDTO {
     public SharedTransactionDTO(SharedTransaction sharedTransaction) {
         this.id = sharedTransaction.getId();
         this.toAccount = sharedTransaction.getAccount().getNumber();
-        this.amount = sharedTransaction.getTotalAmount();
+        this.totalAmount = sharedTransaction.getTotalAmount();
+        this.parcialAmount = sharedTransaction.getParcialAmount();
         this.clientNumber = sharedTransaction.getClientNumber();
         this.description = sharedTransaction.getDescription();
         this.tokenId = sharedTransaction.getTokenId();
@@ -44,8 +47,12 @@ public class SharedTransactionDTO {
         return toAccount;
     }
 
-    public long getAmount() {
-        return amount;
+    public long getTotalAmount() {
+        return totalAmount;
+    }
+
+    public long getParcialAmount() {
+        return parcialAmount;
     }
 
     public int getClientNumber() {
@@ -60,4 +67,7 @@ public class SharedTransactionDTO {
         return fromAccounts;
     }
 
+    public String getDescription() {
+        return description;
+    }
 }

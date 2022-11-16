@@ -9,6 +9,7 @@ var app = new Vue({
         accountFromNumber: "VIN",
         accountToNumber: "VIN",
         amount: 0,
+        totalAmount: 0,
         description: ""
     },
     methods:{
@@ -93,7 +94,8 @@ var app = new Vue({
         },
         cargarDatos: function(){
             this.accountToNumber= this.sharedTransfer.toAccount;
-            this.amount= this.sharedTransfer.amount;
+            this.amount= this.sharedTransfer.parcialAmount;
+            this.totalAmount = this.sharedTransfer.totalAmount;
             this.description= this.sharedTransfer.description;
         }
     },
