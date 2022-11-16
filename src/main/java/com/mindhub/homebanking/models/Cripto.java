@@ -1,15 +1,21 @@
 package com.mindhub.homebanking.models;
 
 public class Cripto {
-        private float ask;
+        private double ask;
+        //precio para comprar cripto
         private float totalAsk;
-        private float bid;
+        private double bid;
+        //precio para vender cripto
         private float totalBid;
-        private float time;
+        private double time;
 
         private MoneyType name;
 
-    public Cripto(float ask, float totalAsk, float bid, float totalBid, float time) {
+
+    public Cripto() {
+    }
+
+    public Cripto(double ask, float totalAsk, double bid, float totalBid, double time) {
         this.ask = ask;
         this.totalAsk = totalAsk;
         this.bid = bid;
@@ -17,47 +23,45 @@ public class Cripto {
         this.time = time;
     }
 
-        public float getAsk() {
-            return ask;
-        }
+    public double getAsk() {
+        return ask;
+    }
 
-        public float getTotalAsk() {
-            return totalAsk;
-        }
+    public void setAsk(double ask) {
+        this.ask = ask;
+    }
 
-        public float getBid() {
-            return bid;
-        }
+    public float getTotalAsk() {
+        return totalAsk;
+    }
 
-        public float getTotalBid() {
-            return totalBid;
-        }
+    public void setTotalAsk(float totalAsk) {
+        this.totalAsk = totalAsk;
+    }
 
-        public float getTime() {
-            return time;
-        }
+    public double getBid() {
+        return bid;
+    }
 
-        // Setter Methods
+    public void setBid(double bid) {
+        this.bid = bid;
+    }
 
-        public void setAsk( float ask ) {
-            this.ask = ask;
-        }
+    public float getTotalBid() {
+        return totalBid;
+    }
 
-        public void setTotalAsk( float totalAsk ) {
-            this.totalAsk = totalAsk;
-        }
+    public void setTotalBid(float totalBid) {
+        this.totalBid = totalBid;
+    }
 
-        public void setBid( float bid ) {
-            this.bid = bid;
-        }
+    public double getTime() {
+        return time;
+    }
 
-        public void setTotalBid( float totalBid ) {
-            this.totalBid = totalBid;
-        }
-
-        public void setTime( float time ) {
-            this.time = time;
-        }
+    public void setTime(double time) {
+        this.time = time;
+    }
 
     public MoneyType getName() {
         return name;

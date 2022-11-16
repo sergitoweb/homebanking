@@ -12,4 +12,6 @@ public final class AccountUtils {
         String numCuenta = type.name() + (int) (Math.random()*(99999999-0)+0);
         return numCuenta;
     }
+
+
 }

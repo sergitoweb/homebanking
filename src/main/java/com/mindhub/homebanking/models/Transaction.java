@@ -20,8 +20,7 @@ public class Transaction {
 
     @NotNull
     @Positive
-    @Min((100L))
-    private long amount;
+    private float amount;
     @NotEmpty
     private String description;
 
@@ -33,7 +32,7 @@ public class Transaction {
     @JoinColumn(name="account_id")
     private Account account;
 
-    public Transaction(long amount, String description, LocalDateTime date, TransactionType type) {
+    public Transaction(float amount, String description, LocalDateTime date, TransactionType type) {
         this.amount = amount;
         this.description = description;
         this.date = date;
@@ -52,11 +51,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public long getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 
