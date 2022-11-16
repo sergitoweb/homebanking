@@ -9,7 +9,7 @@ public class TransactionDTO {
 
     private long id;
     private TransactionType type;
-    private long amount;
+    private float amount;
     private String description;
     private LocalDateTime date;
 
@@ -39,11 +39,11 @@ public class TransactionDTO {
         this.type = type;
     }
 
-    public long getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 

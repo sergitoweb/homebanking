@@ -70,7 +70,7 @@ public class AccountService {
         return client.getAccounts().stream().anyMatch(account -> account.getNumber().equals(number));
     }
 
-    public boolean validarAmount(String number, long amount){
+    public boolean validarAmount(String number, float amount){
         Account cuenta = accountRepository.findByNumber(number).orElse(null);
         return cuenta.getBalance()>=amount;
     }

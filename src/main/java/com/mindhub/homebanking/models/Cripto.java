@@ -2,9 +2,11 @@ package com.mindhub.homebanking.models;
 
 public class Cripto {
         private double ask;
-        private double totalAsk;
+        //precio para comprar cripto
+        private float totalAsk;
         private double bid;
-        private double totalBid;
+        //precio para vender cripto
+        private float totalBid;
         private double time;
 
         private MoneyType name;
@@ -13,7 +15,7 @@ public class Cripto {
     public Cripto() {
     }
 
-    public Cripto(double ask, double totalAsk, double bid, double totalBid, double time) {
+    public Cripto(double ask, float totalAsk, double bid, float totalBid, double time) {
         this.ask = ask;
         this.totalAsk = totalAsk;
         this.bid = bid;
@@ -29,11 +31,11 @@ public class Cripto {
         this.ask = ask;
     }
 
-    public double getTotalAsk() {
+    public float getTotalAsk() {
         return totalAsk;
     }
 
-    public void setTotalAsk(double totalAsk) {
+    public void setTotalAsk(float totalAsk) {
         this.totalAsk = totalAsk;
     }
 
@@ -45,11 +47,11 @@ public class Cripto {
         this.bid = bid;
     }
 
-    public double getTotalBid() {
+    public float getTotalBid() {
         return totalBid;
     }
 
-    public void setTotalBid(double totalBid) {
+    public void setTotalBid(float totalBid) {
         this.totalBid = totalBid;
     }
 

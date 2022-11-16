@@ -1,6 +1,6 @@
 package com.mindhub.homebanking.controller;
 
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 import com.mindhub.homebanking.models.AccountType;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.Cripto;
@@ -18,7 +18,9 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -49,12 +51,31 @@ public class CriptoController {
     }
 
     @PostMapping("/crypto/buy")
-    public ResponseEntity<Object> buyCrypto(HttpSession session, @RequestParam Long amountArsBuy,@RequestParam Cripto cripto, @RequestParam String tipomoneda, @RequestParam String originAccount, @RequestParam String destinationAccount ) {
+    public ResponseEntity<Object> buyCrypto(HttpSession session, @RequestParam Long amountArsBuy/*,@RequestParam Cripto cripto*/, @RequestParam String tipomoneda, @RequestParam String originAccount , @RequestParam String destinationAccount ) {
 
         // <-- atributos: num de origen, num destino, monto a comprar, cliente,-->
 
+        //List<Cripto> cripto = verCotizacion().stream().filter(cripto1 -> cripto1.getName().equals(tipomoneda)).collect(Collectors.toList());
+        List<Cripto> criptos = verCotizacion();
+        List<Cripto> criptofiltrado = criptos.stream().filter(cripto1 -> cripto1.getName().equals(MoneyType.valueOf(tipomoneda.toUpperCase()))).collect(Collectors.toList());
 
-        String result =criptoService.comprarCripto((Client) session.getAttribute("client"),amountArsBuy,cripto,MoneyType.valueOf(tipomoneda.toUpperCase()),originAccount,destinationAccount);
+        String result =criptoService.comprarCripto((Client) session.getAttribute("client"),amountArsBuy,criptofiltrado.get(0),MoneyType.valueOf(tipomoneda.toUpperCase()),originAccount,destinationAccount);
+        if (result.equals("mensaje.exito")){
+            return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.OK);
+
+        }else{
+            return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);
+        }
+    }
+
+
+    @PostMapping("/crypto/sell")
+    public ResponseEntity<Object> sellCrypto(HttpSession session, @RequestParam float amountCriptoSell/*,@RequestParam Cripto cripto*/, @RequestParam String tipomoneda, @RequestParam String originAccount , @RequestParam String destinationAccount) {
+
+        // <-- atributos: num de origen, num destino, monto a comprar, cliente,-->
+        List<Cripto> cripto = verCotizacion().stream().filter(cripto1 -> cripto1.getName().equals(MoneyType.valueOf(tipomoneda.toUpperCase()))).collect(Collectors.toList());
+
+        String result =criptoService.venderCripto((Client) session.getAttribute("client"),amountCriptoSell,cripto.get(0),MoneyType.valueOf(tipomoneda.toUpperCase()),originAccount, destinationAccount);
 
         if (result.equals("mensaje.exito")){
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.OK);
@@ -63,4 +84,6 @@ public class CriptoController {
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);
         }
     }
+
+
 }

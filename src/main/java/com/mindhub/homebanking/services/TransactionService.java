@@ -84,6 +84,100 @@ public class TransactionService {
 
     }
 
+    @Transactional
+    public String makeTransactionCripto(float amountCripto, float amountArs, String description, String fromAccountNumber, String toAccountNumber, Client clientelogueado,MoneyType tipomoneda) {
+
+
+        if (!accountService.validarCuenta(fromAccountNumber)) {
+            return "mensaje.originAccount.invalid";
+        }
+        if (!accountService.validarCuenta(toAccountNumber)) {
+            return "mensaje.destinationAccount.invalid";
+        }
+        if (!accountService.validarCuenta(clientelogueado, fromAccountNumber)) {
+            return "mensaje.originAccountNotLogin";
+        }
+        if (!accountService.validarCuenta(clientelogueado, toAccountNumber)) {
+            return "mensaje.originAccountNotLogin";
+        }
+        if (fromAccountNumber == toAccountNumber) {
+            return "mensaje.originAccount.destinationAccount.equals";
+        }
+
+        // al momento de comprar cripto de debe debitar ars y acreditar cripto
+        // al momento de vender cripto se debe debitar cripto y acreditar ars
+
+        Account accountOrigin = accountRepository.findByNumber(fromAccountNumber).orElse(null);
+        Account accountDestination = accountRepository.findByNumber(toAccountNumber).orElse(null);
+
+        //si es compra cripto... entonces
+        if (accountOrigin.getType().equals(AccountType.VIN) && accountDestination.getType().equals(AccountType.CRY)) {
+            if (accountDestination.getTypemoney().equals(tipomoneda)) {
+
+                if (!accountService.validarAmount(fromAccountNumber, amountArs)) {
+                    return "mensaje.accountNotFounds";
+                }
+
+                Transaction transaction = new Transaction(amountArs, description, LocalDateTime.now(), TransactionType.DEBIT);
+                accountOrigin.addTransaction(transaction);
+                accountOrigin.setBalance(accountOrigin.getBalance() - amountArs);
+
+                session.setAttribute("client", clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
+
+                transactionRepository.save(transaction);
+
+                Transaction transactiondestination = new Transaction(amountCripto, description, LocalDateTime.now(), TransactionType.CREDIT);
+                accountDestination.addTransaction(transactiondestination);
+                accountDestination.setBalance(accountDestination.getBalance() + amountCripto);
+
+                transactionRepository.save(transactiondestination);
+                return "mensaje.exito";
+
+            } else {
+                return "mensaje.moneyType.incompatible";
+            }
+
+            //si es una venta de cripto... entonces
+        } else if (accountOrigin.getType().equals(AccountType.CRY) && accountDestination.getType().equals(AccountType.VIN)) {
+            if (accountOrigin.getTypemoney().equals(tipomoneda)) {
+
+                if (!accountService.validarAmount(fromAccountNumber, amountCripto)) {
+                    return "mensaje.accountNotFounds";
+                }
+
+                Transaction transaction = new Transaction(amountCripto, description, LocalDateTime.now(), TransactionType.DEBIT);
+                accountOrigin.addTransaction(transaction);
+                accountOrigin.setBalance(accountOrigin.getBalance() - amountCripto);
+
+                session.setAttribute("client", clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
+
+                transactionRepository.save(transaction);
+
+                Transaction transactiondestination = new Transaction(amountArs, description, LocalDateTime.now(), TransactionType.CREDIT);
+                accountDestination.addTransaction(transactiondestination);
+                accountDestination.setBalance(accountDestination.getBalance() + amountArs);
+
+                transactionRepository.save(transactiondestination);
+                return "mensaje.exito";
+
+            } else {
+                return "mensaje.moneyType.incompatible";
+            }
+
+        } else {
+            return "mensaje.account.incompatible";
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     public boolean makeTransactionLoan(Account accountDestination,long amount, Loan loan){
 
         if (accountDestination.getType().equals(AccountType.VIN)) {
@@ -98,7 +192,7 @@ public class TransactionService {
         }
     }
 
-
+/*
 
     public String debitTransaction(Long amount, String description, String fromAccountNumber, Client clientelogueado,MoneyType moneyType){
 
@@ -114,7 +208,7 @@ public class TransactionService {
 
         Account accountOrigin = accountRepository.findByNumber(fromAccountNumber).orElse(null);
 
-        if(accountOrigin.getType().equals(AccountType.CRY) & accountOrigin.getTypemoney().equals(moneyType)) {
+        if(accountOrigin.getType().equals(AccountType.VIN) & accountOrigin.getTypemoney().equals(moneyType)) {
 
             Transaction transaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.DEBIT);
             accountOrigin.addTransaction(transaction);
@@ -131,8 +225,33 @@ public class TransactionService {
 
     }
 
+    public String creditTransaction(Long amount, String description, String toAccountNumber, Client clientelogueado,MoneyType moneyType){
+
+        if(!accountService.validarCuenta(toAccountNumber)){
+            return "mensaje.destinationAccount.invalid";
+        }
+        if(!accountService.validarCuenta(clientelogueado,toAccountNumber)){
+            return "mensaje.originAccountNotLogin";
+        }
+
+        Account accountDestination = accountRepository.findByNumber(toAccountNumber).orElse(null);
+
+        if(accountDestination.getType().equals(AccountType.CRY) & accountDestination.getTypemoney().equals(moneyType)) {
+            Transaction transaction = new Transaction(amount, description, LocalDateTime.now(), TransactionType.CREDIT);
+            accountDestination.addTransaction(transaction);
+            accountDestination.setBalance(accountDestination.getBalance() + amount);
+            session.setAttribute("client", clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
+            transactionRepository.save(transaction);
+
+            return "mensaje.exito";
+        }else{
+            return "mensaje.account.incompatible";
+        }
+
+    }
 
 
 
+*/
 
 }
