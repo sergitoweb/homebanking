@@ -45,9 +45,15 @@
               </a>
             </li>
             <li>
-              <a href="/web/transfers.html" class="nav-link active">
+              <a href="/web/transfers.html" class="nav-link link-dark">
                 <i class="bi bi-box-arrow-right"></i>
                 Transfers
+              </a>
+            </li>
+            <li>
+              <a href="/web/shared-transfers.html" class="nav-link link-dark">
+                <i class="bi bi-people"></i>
+                Shared Payments
               </a>
             </li>
             <li>
@@ -56,20 +62,19 @@
                 Loans
               </a>
             </li>
-          </ul>
-        <ul class="nav nav-pills flex-column mb-auto">
+        <ul class="nav nav-pills flex-column mb-auto font-Table">
 
             <table class="table">
               <thead>
                 <th>Cripto</th>
-                <th>Compra</th>
-                <th>Venta</th>
+                <th>Buy</th>
+                <th>Sell</th>
               </thead>
               <tbody>
                  <tr v-for="cripto in listacripto">
-                    <td>{{ cripto.name}}</td>
-                     <td>{{ cripto.totalAsk}}</td>
-                     <td>{{cripto.totalBid}}</td>
+                    <td>{{ cripto.name}}:</td>
+                     <td>{{ cripto.totalAsk}}ars</td>
+                     <td>{{cripto.totalBid}}ars</td>
                 </tr>
               </tbody>
             </table>
@@ -81,63 +86,77 @@
           </ul>
         </div>
       </div>
-      <div class="col offset-md-1">
-        <div class="row mt-3">
 
-          <div class="col-10"><!-- este div es el contenedor de los form... debo meter dos div juntos-->
-            <h2 class="display-6 subtitle">Conversion - Cripto</h2>
-            <form class="mt-4">
-              <div class="row">
-                <div class="col-md-6">
-                  <!-- listado de criptos -->
-                  <label for="type" class="form-label">Cripto</label>
-                  <select id="criptotype" v-model="criptoType" name="criptoType" v-on:change="criptoType" class="form-select" aria-label="Default select example" required>
-                    <option value="third">elegir la cripto </option>
-                  </select>
+      <div class="col-md-3"><!-- aca va el conversor-->
+        <h3 class="text-center">crypto converter</h3>
+              <!-- listado de criptos -->
+        <div class="col-md">
 
-                  <button type="button"   class="btn btn-primary">Primary</button>
-
-                  <label for="type" class="form-label">origin type money</label>
-                  <select id="type" v-model="trasnferType" name="trasnferType" v-on:change="changedType" class="form-select" aria-label="Default select example" required>
-                    <option value="third">Third party accounts </option>
-                  </select>
-                </div>
-                <!-- aca va el boton convertir-->
-                <div class="row mt-3">
-                  <div class="col-md">
-                    <!-- Seleccionamos la cuenta de origen-->
-                    <label for="origin" class="form-label">Origin account</label>
-                    <select id="origin" v-model="accountFromNumber" v-on:change="changedFrom" class="form-select" aria-label="Default select example" required>
-                      <option value="VIN">Open this select menu</option>
-                      <option v-for="account in clientAccounts" v-bind:value="account.number">{{ account.number }} | balance: {{ account.balance }}</option>
-                    </select>
-                  </div>
-                  <div class="col-md">
-                    <!-- Seleccionamos la cuenta cripto destino-->
-                    <label for="to-account" class="form-label">destination account</label>
-                    <template v-if="trasnferType == 'third'">
-                      <input id="to-account" name="to-account" type="text" v-model="accountToNumber" class="form-control"  aria-label="to account">
-                    </template>
-                    <template v-if="trasnferType == 'own'">
-                      <select id="to-account" v-model="accountToNumber" class="form-select" aria-label="Default select example" required>
-                        <option value="VIN">Open this select menu</option>
-                        <option v-for="account in clientAccountsTo" v-bind:value="account.number">{{ account.number }} | balance: {{ account.balance }}</option>
-                      </select>
-                    </template>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row mt-3">
-                <div class="col-md-3">
-                  <label for="amount" class="form-label">amount to buy: (ARS) </label>
-                  <input id="amount" name="amount" v-model="amount" type="number" class="form-control"  aria-label="to account">
-                </div>
-
-              </div>
-              <button type="button" v-on:click="checkTransfer" class="btn btn-sm btn-outline-success mt-4">transfer</button>
-            </form>
+          <div class="row g-3"><!-- contenedor para poner la cripto a convertir-->
+            <label>Cripto</label>
+            <div class="col">
+              <select id="criptotype" v-model="criptoType" name="criptoType" v-on:change="criptoType" class="form-select" aria-label="Default select example" required>
+                <option value="third">elegir la cripto </option>
+              </select>
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+            </div>
           </div>
+          <div class="row g-3"><!-- contenedor cpnversor-->
+            <label class="form-label">money destination</label>
+            <div class="col">
+              <select id="criptotype2" v-model="criptoType" name="criptoType" v-on:change="criptoType" class="form-select" aria-label="Default select example" required>
+                <option value="third">elegir </option>
+              </select>
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+            </div>
+          </div>
+          <br>
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-primary">Convert</button>
+          </div>
+
+          </div>
+      </div>
+
+      <div class="col-md-4">
+        <h3 class="text-center">Buy and Sell Crypto</h3>
+          <!-- Seleccionamos la cuenta de origen-->
+          <label>Origin account</label>
+          <select id="origin" v-model="accountFromNumber" v-on:change="changedFrom" class="form-select" aria-label="Default select example" required>
+            <option value="VIN">Open this select menu</option>
+            <option v-for="account in clientAccounts" v-bind:value="account.number">{{ account.number }} | balance: {{ account.balance }}</option>
+          </select>
+
+          <!-- Seleccionamos la cuenta cripto destino-->
+          <label >destination account</label>
+          <template v-if="trasnferType == 'third'">
+            <input id="to-account" name="to-account" type="text" v-model="accountToNumber" class="form-control"  aria-label="to account">
+          </template>
+          <template v-if="trasnferType == 'own'">
+            <select id="to-account" v-model="accountToNumber" class="form-select" aria-label="Default select example" required>
+              <option value="VIN">Open this select menu</option>
+              <option v-for="account in clientAccountsTo" v-bind:value="account.number">{{ account.number }} | balance: {{ account.balance }}</option>
+            </select>
+          </template>
+        <br>
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-label">Amount: </label>
+          <div class="col-sm-10">
+            <input type="email" class="form-control">
+          </div>
+        </div>
+        <br>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+
+      </div>
 
         </div>
       </div>
