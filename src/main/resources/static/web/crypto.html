@@ -61,22 +61,16 @@
 
             <table class="table">
               <thead>
-              <tr>
                 <th>Cripto</th>
                 <th>Compra</th>
                 <th>Venta</th>
-                <!--
-                <ul id="cotizacionCripto">
-                  <li v-for="cripto in listcripto">
-                    <td>{{ cripto.name}}</td>
-                    <td>{{ cripto.totalAsk}}</td>
-                  </li>
-                </ul>-->
-
-              </tr>
               </thead>
               <tbody>
-
+                 <tr v-for="cripto in listacripto">
+                    <td>{{ cripto.name}}</td>
+                     <td>{{ cripto.totalAsk}}</td>
+                     <td>{{cripto.totalBid}}</td>
+                </tr>
               </tbody>
             </table>
           </ul>

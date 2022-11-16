@@ -10,6 +10,7 @@ var app = new Vue({
         accountToNumber: "VIN",
         trasnferType: "own",
         amount: 0,
+        listacripto:[],
         description: ""
     },
     methods:{
@@ -20,6 +21,12 @@ var app = new Vue({
                 //get client ifo
                 this.clientAccounts = response.data;
             })
+            .then(() => {
+                         axios.get(`/api/crypto`)
+                                    .then((response) => {
+                                        this.listacripto = response.data;
+                                    })
+                         })
             .catch((error) => {
                 this.errorMsg = "Error getting data";
                 this.errorToats.show();
