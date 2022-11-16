@@ -10,7 +10,9 @@ var app = new Vue({
         trasnferType: "own",
         amount: 0,
         numberSharedBetwen: 0,
-        description: ""
+        description: "",
+        mensajeLinkPago: "",
+        linkPago: ""
     },
     methods:{
             getData: function(){
@@ -55,6 +57,8 @@ var app = new Vue({
                 }
                 axios.post(`/api/transactions/shared?fromAccountNumber=${this.accountFromNumber}&toAccountNumber=${this.accountToNumber}&amount=${this.amount}&description=${this.description}&numberSharedBetwen=${this.numberSharedBetwen}`)
                 .then(response => {
+                    this.linkPago = response.data;
+                    this.mensajeLinkPago = '<p style="color:red;">'+ this.linkPago +'</p>';
                     this.modal.hide();
                     this.okmodal.show();
                 })
@@ -62,6 +66,9 @@ var app = new Vue({
                     this.errorMsg = error.response.data;
                     this.errorToats.show();
                 })
+            },
+            copyToClipboard: function(){
+                navigator.clipboard.writeText(this.linkPago)
             },
             changedType: function(){
                 this.accountFromNumber = "VIN";

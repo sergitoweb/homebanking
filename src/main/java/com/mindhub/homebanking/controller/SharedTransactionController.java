@@ -40,7 +40,7 @@ public class SharedTransactionController {
         if (result.equals("mensaje.exito")) {
             String linkPago = sharedTransactionService.makeSharedTransaction(amount,numberSharedBetwen, fromAccountNumber, description);
             System.out.println(linkPago);
-            return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.CREATED);
+            return new ResponseEntity<>(linkPago, HttpStatus.CREATED);
         }else {
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);
         }

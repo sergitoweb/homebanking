@@ -155,6 +155,11 @@
                 </div>
                 <div class="modal-body">
                     The funds have been transferred! <i class="bi bi-check-circle-fill text-success"></i>
+                    <br>
+                    Link de pago:
+                    <br>
+                    <span id="mensajeLinkPago" v-html="mensajeLinkPago"></span>
+                    <i class="bi bi-clipboard" v-on:click="copyToClipboard"></i>
                 </div>
                 <div class="modal-footer">
                     <button type="button" v-on:click="finish" class="btn btn-sm btn-outline-success" data-bs-dismiss="modal">Ok</button>

@@ -11,6 +11,9 @@ import com.mindhub.homebanking.repositories.SharedTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.UUID;
 
 @Service
@@ -30,6 +33,8 @@ public class SharedTransactionService {
     @Autowired
     private TransactionService transactionService;
 
+
+
     public SharedTransactionDTO findById(long id){
         return  new SharedTransactionDTO(sharedTransactionRepository.findById(id).orElse(null));
     }
@@ -45,7 +50,9 @@ public class SharedTransactionService {
 
         System.out.println("Token: " + tokenId);
 
-        String linkPago= "http://localhost:8080/web/pay-shared-transfers.html?tokenId=" + tokenId  ;
+        String linkPago= "http://localhost:8080/web/pay-shared-transfers.html?tokenId=" + tokenId;
+
+
         return linkPago;
     }
 
