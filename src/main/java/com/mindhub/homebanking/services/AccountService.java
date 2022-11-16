@@ -22,6 +22,7 @@ public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
     public String agregarCuenta(Client client, AccountType type, MoneyType tipomoneda) {
 
         if(type == null){
@@ -69,9 +70,13 @@ public class AccountService {
         return client.getAccounts().stream().anyMatch(account -> account.getNumber().equals(number));
     }
 
-    public boolean validarAmount(String number, long amount){
+    public boolean validarAmount(String number, float amount){
         Account cuenta = accountRepository.findByNumber(number).orElse(null);
         return cuenta.getBalance()>=amount;
+    }
+
+    public Account obtenerCuenta(String number){
+        return accountRepository.findByNumber(number).orElse(null);
     }
 
 
