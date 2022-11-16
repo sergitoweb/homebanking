@@ -42,9 +42,9 @@ public class HomebankingApplication {
 		return (args) -> {
 			// save a couple of customers
 
-			Client client1 = new Client("tomas", "quinteros", "tomas@admin", passwordEncoder.encode("123"));
-			Client client2 = new Client("jose", "perez", "jose@jose", passwordEncoder.encode("123"));
-			Client client3 = new Client("admin", "admin", "admin@admin", passwordEncoder.encode("123"));
+			Client client1 = new Client("Enzo", "Don", "enzo@admin", passwordEncoder.encode("123"));
+			Client client2 = new Client("Sergio", "Noir", "sergio@sergio", passwordEncoder.encode("123"));
+			Client client3 = new Client("Lucas", "Tecera", "admin@admin", passwordEncoder.encode("123"));
 
 
 			Account account1 = new Account(LocalDateTime.parse("2021-09-08T00:00:00"),10000,"VIN005",AccountType.VIN,MoneyType.ARS);
