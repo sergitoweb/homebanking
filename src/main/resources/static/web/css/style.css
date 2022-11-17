@@ -58,6 +58,10 @@
    font-size:42px;
 }
 
+.login-Container{
+background: rgb(66,66,66);
+background: linear-gradient(308deg, rgba(66,66,66,1) 0%, rgba(147,147,148,0.9416141456582633) 48%, rgba(219,219,210,1) 100%);
+}
 
 .welcome-logo{
     width: 10%;
@@ -71,4 +75,8 @@
 
 .index-container{
     margin-top: 12%;
+}
+
+.font-Table{
+    font-size:10px;
 }
