@@ -6,12 +6,15 @@ var app = new Vue({
         debitCards: [],
         errorToats: null,
         errorMsg: null,
-        accountFromNumber: "VIN",
-        accountToNumber: "VIN",
-        trasnferType: "own",
+        accountFromNumber: '',
+        accountToNumber: '',
+        operation: "",
         amount: 0,
-        listacripto:[],
-        description: ""
+        typeMoney:{},
+        typecripto: {},
+        cryptoamount:'',
+        currentamount:'',
+        listacripto:[]
     },
     methods:{
         getData: function(){
@@ -31,11 +34,13 @@ var app = new Vue({
                 this.errorMsg = "Error getting data";
                 this.errorToats.show();
             })
+
         },
         formatDate: function(date){
             return new Date(date).toLocaleDateString('en-gb');
         },
         checkTransfer: function(){
+
             if(this.accountFromNumber == "VIN"){
                 this.errorMsg = "You must select an origin account";  
                 this.errorToats.show();
@@ -52,8 +57,14 @@ var app = new Vue({
                 this.errorToats.show();
             }else{
                 this.modal.show();
+
             }
         },
+
+        hola: function(){
+            console.log('hola')
+        },
+
         transfer: function(){
             let config = {
                 /*headers: {
@@ -106,8 +117,22 @@ var app = new Vue({
                                                this.accountToNumber = urlParams.get('accountNumber');
                                            }
 
-                }
+        },
+            simulator: function(){
+                   if(this.cryptoamount!=''){//convertir de cripto ars
+
+                      this.currentamount = this.cryptoamount * this.typeMoney.totalAsk;
+                      this.cryptoamount='';
+
+                   }else{ // convertir de ars a cripto
+
+                        this.cryptoamount= this.currentamount / this.typeMoney.totalBid;
+                        currentamount='';
+                   };
+            }
+
     },
+
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
         this.modal = new bootstrap.Modal(document.getElementById('confirModal'));
@@ -115,4 +140,5 @@ var app = new Vue({
         this.getData();
         this.updateParams();
     }
+
 })
