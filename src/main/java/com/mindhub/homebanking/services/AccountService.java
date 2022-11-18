@@ -72,7 +72,8 @@ public class AccountService {
 
     public boolean validarAmount(String number, float amount){
         Account cuenta = accountRepository.findByNumber(number).orElse(null);
-        return cuenta.getBalance()>=amount;
+        double newbalance = cuenta.getBalance();
+        return newbalance>=(double) amount;
     }
 
     public Account obtenerCuenta(String number){

@@ -85,36 +85,36 @@ public class TransactionService {
     }
 
     @Transactional
-    public String makeTransactionCripto(float amountCripto, float amountArs, String description, String fromAccountNumber, String toAccountNumber, Client clientelogueado,MoneyType tipomoneda) {
+    public String makeTransactionCripto(float amountCripto, float amountArs, String description, String originNumber,String destinationNumber, Client clientelogueado,MoneyType tipomoneda) {
 
 
-        if (!accountService.validarCuenta(fromAccountNumber)) {
+        if (!accountService.validarCuenta(destinationNumber)) {
             return "mensaje.originAccount.invalid";
         }
-        if (!accountService.validarCuenta(toAccountNumber)) {
+        if (!accountService.validarCuenta(originNumber)) {
             return "mensaje.destinationAccount.invalid";
         }
-        if (!accountService.validarCuenta(clientelogueado, fromAccountNumber)) {
+        if (!accountService.validarCuenta(clientelogueado, destinationNumber)) {
             return "mensaje.originAccountNotLogin";
         }
-        if (!accountService.validarCuenta(clientelogueado, toAccountNumber)) {
+        if (!accountService.validarCuenta(clientelogueado, originNumber)) {
             return "mensaje.originAccountNotLogin";
         }
-        if (fromAccountNumber == toAccountNumber) {
+        if (destinationNumber == originNumber) {
             return "mensaje.originAccount.destinationAccount.equals";
         }
 
         // al momento de comprar cripto de debe debitar ars y acreditar cripto
         // al momento de vender cripto se debe debitar cripto y acreditar ars
 
-        Account accountOrigin = accountRepository.findByNumber(fromAccountNumber).orElse(null);
-        Account accountDestination = accountRepository.findByNumber(toAccountNumber).orElse(null);
+        Account accountOrigin = accountRepository.findByNumber(originNumber).orElse(null);
+        Account accountDestination = accountRepository.findByNumber(destinationNumber).orElse(null);
 
         //si es compra cripto... entonces
         if (accountOrigin.getType().equals(AccountType.VIN) && accountDestination.getType().equals(AccountType.CRY)) {
             if (accountDestination.getTypemoney().equals(tipomoneda)) {
 
-                if (!accountService.validarAmount(fromAccountNumber, amountArs)) {
+                if (accountService.validarAmount(originNumber, amountArs)== false) {
                     return "mensaje.accountNotFounds";
                 }
 
@@ -141,7 +141,7 @@ public class TransactionService {
         } else if (accountOrigin.getType().equals(AccountType.CRY) && accountDestination.getType().equals(AccountType.VIN)) {
             if (accountOrigin.getTypemoney().equals(tipomoneda)) {
 
-                if (!accountService.validarAmount(fromAccountNumber, amountCripto)) {
+                if (!accountService.validarAmount(destinationNumber, amountCripto)) {
                     return "mensaje.accountNotFounds";
                 }
 
