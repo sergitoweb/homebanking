@@ -12,6 +12,16 @@
 </head>
 <body>
 <div id="app">
+
+
+    <div class='ripple-background'>
+        <div class='circle xxlarge shade1'></div>
+        <div class='circle xlarge shade2'></div>
+        <div class='circle large shade3'></div>
+        <div class='circle mediun shade4'></div>
+        <div class='circle small shade5'></div>
+    </div>
+
     <div class="toast-container position-absolute p-3 top-0 end-0" id="toastPlacement">
         <div id="danger-toast" data-bs-delay="2000" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
@@ -22,13 +32,16 @@
             </div>
         </div>
     </div>
-    <div class="container bg-light">
+    <div id="panel" class="container bg-light" ><!-- contenedor de las cosas -->
         <div class="row mt-5">
             <div class="col-12 col-md-2">
+                <div>
+                    <br>
+                </div>
                 <div class="bg-light">
                     <a href="/web/accounts.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                         <img class="menu-logo" src="img/favicon-32x32.png">
-                        <span class="fs-5">Banco Pasion</span>
+                        <span id="titulo" class="fs-5" >Banco Pasion</span>
                     </a>
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
