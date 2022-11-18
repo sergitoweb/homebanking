@@ -77,8 +77,10 @@
                             </a>
                         </li>
                     </ul>
+                    <hr>
 
                     <ul class="nav nav-pills flex-column mb-auto font-Table mt-2 mb-2">
+
                         <table class="table">
                             <thead>
                             <th>Cripto</th>
@@ -94,6 +96,7 @@
                             </tbody>
                         </table>
                     </ul>
+                    <hr>
 
                     <ul class="nav nav-pills flex-column mb-auto">
                         <button class="btn btn-danger img-fluid" v-on:click="signOut">Sign out</button>
@@ -102,128 +105,161 @@
             </div>
 
             <div class="col-md-3"><!-- aca va el conversor-->
-                <h3 class="text-center">crypto converter</h3>
+                <h3 class="text-center">Crypto simulator</h3>
+                <br>
                 <!-- listado de criptos -->
                 <div class="col-md">
-
                     <div class="row g-3"><!-- contenedor para poner la cripto a convertir-->
-                        <label>Cripto</label>
                         <div class="col">
-                            <select id="criptotype" v-model="criptoType" name="criptoType" v-on:change="criptoType"
-                                    class="form-select" aria-label="Default select example" required>
-                                <option value="third">elegir la cripto</option>
+                            <label>Cripto :</label>
+                            <select id="typeMoney" v-model="typeMoney">
+                                <option v-for="cripto in listacripto" v-bind:value="cripto">
+                                    {{ cripto.name}}
+                                </option>
                             </select>
                         </div>
                         <div class="col">
-                            <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
-                        </div>
-                    </div>
-                    <div class="row g-3"><!-- contenedor cpnversor-->
-                        <label class="form-label">money destination</label>
-                        <div class="col">
-                            <select id="criptotype2" v-model="criptoType" name="criptoType" v-on:change="criptoType"
-                                    class="form-select" aria-label="Default select example" required>
-                                <option value="third">elegir</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                            <input type="text" class="form-control" placeholder="crypto amount" v-model="cryptoamount"
+                                   :readonly="currentamount==''?false:true ">
                         </div>
                     </div>
                     <br>
-                    <div class="modal-footer">
+                    <div class="row g-3"><!-- contenedor cpnversor-->
 
-                        <button type="button" class="btn btn-primary">Convert</button>
+                        <div class="col">
+                            <label class="form-label">Money: ARS</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="current amount" v-model="currentamount"
+                                   :readonly="cryptoamount==''?false:true ">
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="modal-footer">
+                        <button type="button" v-on:click="simulator" class="btn btn-success">Convert</button>
                     </div>
 
                 </div>
             </div>
-
+            <div class="col-md-1">
+            </div>
             <div class="col-md-4">
                 <h3 class="text-center">Buy and Sell Crypto</h3>
                 <!-- Seleccionamos la cuenta de origen-->
-                <label>Origin account</label>
-                <select id="origin" v-model="accountFromNumber" v-on:change="changedFrom" class="form-select"
+                <label>Crypto Account</label>
+                <select id="origin" v-model="criptoAccount" v-on:change="changedFrom" class="form-select"
                         aria-label="Default select example" required>
-                    <option value="VIN">Open this select menu</option>
-                    <option v-for="account in clientAccounts" v-bind:value="account.number">{{ account.number }} |
-                        balance: {{ account.balance }}
+                    <option value="CRY">Open this select menu</option>
+                    <option v-for="account in clientAccounts" v-bind:value="account.number">
+                        {{ account.number }} - {{account.typemoney}} | balance: {{ account.balance }}
                     </option>
                 </select>
 
                 <!-- Seleccionamos la cuenta cripto destino-->
-                <label>destination account</label>
-                <template v-if="trasnferType == 'third'">
-                    <input id="to-account" name="to-account" type="text" v-model="accountToNumber" class="form-control"
-                           aria-label="to account">
-                </template>
-                <template v-if="trasnferType == 'own'">
-                    <select id="to-account" v-model="accountToNumber" class="form-select"
-                            aria-label="Default select example" required>
-                        <option value="VIN">Open this select menu</option>
-                        <option v-for="account in clientAccountsTo" v-bind:value="account.number">{{ account.number }} |
-                            balance: {{ account.balance }}
-                        </option>
-                    </select>
-                </template>
+                <label>Current Account</label>
+                <select id="destination" v-model="currentAccount" v-on:change="changedFrom" class="form-select"
+                        aria-label="Default select example" required>
+                    <option value="VIN">Open this select menu</option>
+                    <option v-for="account in clientAccounts" v-bind:value="account.number">
+                        {{ account.number }} - {{account.typemoney}} | balance: {{ account.balance }}
+                    </option>
+                </select>
                 <br>
                 <div class="row mb-3">
+                    <label class="form-label">{{labelAmount}}</label><!-- aca va la leyenda -->
                     <label class="col-sm-2 col-form-label">Amount: </label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control">
+                        <input type="number" class="form-control" v-model="amount">
                     </div>
                 </div>
                 <br>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" v-on:click="checkTransfer">Apply</button>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <br>
+                <br>
+                <br>
+
+                <div class="col">
+                    <label>Cripto :</label>
+                    <select id="typecripto" v-model="typecripto">
+                        <option v-for="cripto in listacripto" v-bind:value="cripto">
+                            {{ cripto.name}}
+                        </option>
+                    </select>
                 </div>
 
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" v-on:click="changeLabel('Enter your amount in ARS')"
+                           value="buy"
+                           v-model="operation">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Buy Crypto
+                    </label>
+
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" v-on:click="changeLabel('Enter your amount in COIN')"
+                           value="sell"
+                           v-model="operation" checked>
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Sell Crypto
+                    </label>
+                </div>
+                <br>
+                <div class="modal-footer">
+
+                </div>
             </div>
 
         </div>
     </div>
-</div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="confirModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirModalLabel">Confirm Funds Transfer</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Transfer cannot be undone, do you want to continue?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" v-on:click="transfer" class="btn btn-sm btn-outline-success">Yes, transfer the
-                    funds
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal 2-->
-<div class="modal fade" id="okModal" tabindex="-1" aria-labelledby="okModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="okModalLabel">Transaction complete!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                The funds have been transferred! <i class="bi bi-check-circle-fill text-success"></i>
-            </div>
-            <div class="modal-footer">
-                <button type="button" v-on:click="finish" class="btn btn-sm btn-outline-success"
-                        data-bs-dismiss="modal">Ok
-                </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="confirModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirModalLabel">Confirm Funds Transfer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Transfer cannot be undone, do you want to continue?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel
+                    </button>
+                    <button @click="transfer" class="btn btn-sm btn-outline-success">Yes, transfer the
+                        funds
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <!-- Modal 2-->
+    <div class="modal fade" id="okModal" tabindex="-1" aria-labelledby="okModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="okModalLabel">Transaction complete!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    The funds have been transferred! <i class="bi bi-check-circle-fill text-success"></i>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" v-on:click="finish" class="btn btn-sm btn-outline-success"
+                            data-bs-dismiss="modal">Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>

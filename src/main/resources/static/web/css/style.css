@@ -49,8 +49,6 @@
 }
 
 .welcome{
-    background: linear-gradient(45deg,#0946ed,#fffff0,#0946ed);
-
 }
 
 .welcome-font{
@@ -59,9 +57,24 @@
 }
 
 .login-Container{
-background: rgb(66,66,66);
-background: linear-gradient(308deg, rgba(66,66,66,1) 0%, rgba(147,147,148,0.9416141456582633) 48%, rgba(219,219,210,1) 100%);
+background: none;
 }
+
+.login-content{
+
+    background: red;
+    width: 40vw;
+    min-height: 100vh;
+    height: 100%;
+    margin-left: auto;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    background: linear-gradient(308deg, rgba(117,170,219,1) 0%, rgba(252,252,252,0.9416141456582633) 30%,rgba(252,252,252,0.9416141456582633) 70%, rgba(117,170,219,1) 100%);
+}
+
 
 .welcome-logo{
     width: 10%;
@@ -79,4 +92,11 @@ background: linear-gradient(308deg, rgba(66,66,66,1) 0%, rgba(147,147,148,0.9416
 
 .font-Table{
     font-size:10px;
+}
+
+@media(max-width: 885px) {
+    .login-content{
+          width: 100vw;
+    }
+
 }
