@@ -20,7 +20,7 @@ public class CriptoService {
     private TransactionService transactionService;
 
 
-    public String comprarCripto(Client client, Long amountArsBuy, Cripto cripto, MoneyType tipomoneda, String originAccount, String destinationAccount) {
+    public String comprarCripto(Client client, float amountArsBuy, Cripto cripto, MoneyType tipomoneda, String originAccount, String destinationAccount) {
         //totalAsk - precio de compra con comisiones incluida
         float montoCripto = (float)amountArsBuy/cripto.getTotalAsk();
 

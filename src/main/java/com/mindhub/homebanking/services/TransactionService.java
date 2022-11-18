@@ -85,7 +85,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public String makeTransactionCripto(float amountCripto, float amountArs, String description, String destinationNumber, String originNumber, Client clientelogueado,MoneyType tipomoneda) {
+    public String makeTransactionCripto(float amountCripto, float amountArs, String description, String originNumber,String destinationNumber, Client clientelogueado,MoneyType tipomoneda) {
 
 
         if (!accountService.validarCuenta(destinationNumber)) {
@@ -107,8 +107,8 @@ public class TransactionService {
         // al momento de comprar cripto de debe debitar ars y acreditar cripto
         // al momento de vender cripto se debe debitar cripto y acreditar ars
 
-        Account accountOrigin = accountRepository.findByNumber(destinationNumber).orElse(null);
-        Account accountDestination = accountRepository.findByNumber(originNumber).orElse(null);
+        Account accountOrigin = accountRepository.findByNumber(originNumber).orElse(null);
+        Account accountDestination = accountRepository.findByNumber(destinationNumber).orElse(null);
 
         //si es compra cripto... entonces
         if (accountOrigin.getType().equals(AccountType.VIN) && accountDestination.getType().equals(AccountType.CRY)) {

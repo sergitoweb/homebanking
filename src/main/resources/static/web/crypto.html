@@ -148,7 +148,7 @@
                 <h3 class="text-center">Buy and Sell Crypto</h3>
                 <!-- Seleccionamos la cuenta de origen-->
                 <label>Crypto Account</label>
-                <select id="origin" v-model="accountFromNumber" v-on:change="changedFrom" class="form-select"
+                <select id="origin" v-model="criptoAccount" v-on:change="changedFrom" class="form-select"
                         aria-label="Default select example" required>
                     <option value="CRY">Open this select menu</option>
                     <option v-for="account in clientAccounts" v-bind:value="account.number">
@@ -158,7 +158,7 @@
 
                 <!-- Seleccionamos la cuenta cripto destino-->
                 <label>Current Account</label>
-                <select id="destination" v-model="accountToNumber" v-on:change="changedFrom" class="form-select"
+                <select id="destination" v-model="currentAccount" v-on:change="changedFrom" class="form-select"
                         aria-label="Default select example" required>
                     <option value="VIN">Open this select menu</option>
                     <option v-for="account in clientAccounts" v-bind:value="account.number">
@@ -167,6 +167,7 @@
                 </select>
                 <br>
                 <div class="row mb-3">
+                    <label class="form-label">{{labelAmount}}</label><!-- aca va la leyenda -->
                     <label class="col-sm-2 col-form-label">Amount: </label>
                     <div class="col-sm-10">
                         <input type="number" class="form-control" v-model="amount">
@@ -194,7 +195,7 @@
                 </div>
 
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" v-on:click="changeLabel('Enter your amount in ARS')"
                            value="buy"
                            v-model="operation">
                     <label class="form-check-label" for="flexRadioDefault1">
@@ -203,7 +204,7 @@
 
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" v-on:click="changeLabel('Enter your amount in COIN')"
                            value="sell"
                            v-model="operation" checked>
                     <label class="form-check-label" for="flexRadioDefault2">

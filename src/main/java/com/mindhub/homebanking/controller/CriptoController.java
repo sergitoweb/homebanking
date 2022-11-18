@@ -51,7 +51,7 @@ public class CriptoController {
     }
 
     @PostMapping("/crypto/buy")
-    public ResponseEntity<Object> buyCrypto(HttpSession session, @RequestParam Long amountArsBuy, @RequestParam String tipomoneda, @RequestParam String originAccount , @RequestParam String destinationAccount ) {
+    public ResponseEntity<Object> buyCrypto(HttpSession session, @RequestParam float amountArsBuy, @RequestParam String tipomoneda, @RequestParam String originAccount , @RequestParam String destinationAccount ) {
 
         // <-- atributos: num de origen, num destino, monto a comprar, cliente,-->
 

@@ -6,8 +6,8 @@ var app = new Vue({
         debitCards: [],
         errorToats: null,
         errorMsg: null,
-        accountFromNumber: '',
-        accountToNumber: '',
+        criptoAccount: '',
+        currentAccount: '',
         operation: "",
         amount: 0,
         typeMoney:{},
@@ -51,35 +51,41 @@ var app = new Vue({
             }else if(this.amount == 0){
                 this.errorMsg = "You must indicate an amount";  
                 this.errorToats.show();
-            }
-            else if(this.description.length <= 0){
-                this.errorMsg = "You must indicate a description";  
-                this.errorToats.show();
             }else{
                 this.modal.show();
 
             }
         },
-
-        hola: function(){
-            console.log('hola')
+        changeLabel : function(label){
+            this.labelAmount = label;
         },
-
         transfer: function(){
-            let config = {
-                /*headers: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                }*/
+
+            if(this.operation == "buy"){//controller buycrypto
+               // this.labelAmount="Enter your amount in ARS";
+                axios.post(`/api/crypto/buy?amountArsBuy=${this.amount}&tipomoneda=${this.typecripto.name}&originAccount=${this.currentAccount}&destinationAccount=${this.criptoAccount}`)
+                .then(response => {
+                    this.modal.hide();
+                    this.okmodal.show();
+                })
+                .catch((error) =>{
+                    this.errorMsg = error.response.data;
+                    this.errorToats.show();
+                })
+
+            }else{ //controller sellcripto
+                //this.labelAmount="Enter your amount in COIN";
+                console.log(this.criptoAccount +" - "+this.currentAccount)
+                                axios.post(`/api/crypto/sell?amountCriptoSell=${this.amount}&tipomoneda=${this.typecripto.name}&originAccount=${this.criptoAccount}&destinationAccount=${this.currentAccount}`)
+                                .then(response => {
+                                    this.modal.hide();
+                                    this.okmodal.show();
+                                })
+                                .catch((error) =>{
+                                    this.errorMsg = error.response.data;
+                                    this.errorToats.show();
+                                })
             }
-            axios.post(`/api/transactions?fromAccountNumber=${this.accountFromNumber}&toAccountNumber=${this.accountToNumber}&amount=${this.amount}&description=${this.description}`)
-            .then(response => { 
-                this.modal.hide();
-                this.okmodal.show();
-            })
-            .catch((error) =>{
-                this.errorMsg = error.response.data;  
-                this.errorToats.show();
-            })
         },
         changedType: function(){
             this.accountFromNumber = "VIN";
@@ -102,20 +108,20 @@ var app = new Vue({
                 this.errorToats.show();
             })
         },
-            updateParams: function(){
-                    let urlParams = new URLSearchParams(window.location.search);
-                    if (urlParams.get('amount')) {
-                        this.amount = urlParams.get('amount');
-                    };
-                    if (urlParams.get('description')) {
-                         this.description = urlParams.get('description');
-                                        }
-                    if (urlParams.get('type')) {
-                                            this.trasnferType = urlParams.get('type');
-                                        }
-                       if (urlParams.get('accountNumber')) {
-                                               this.accountToNumber = urlParams.get('accountNumber');
-                                           }
+        updateParams: function(){
+            let urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('amount')) {
+                    this.amount = urlParams.get('amount');
+                };
+                if (urlParams.get('description')) {
+                    this.description = urlParams.get('description');
+                }
+                if (urlParams.get('type')) {
+                    this.trasnferType = urlParams.get('type');
+                }
+                if (urlParams.get('accountNumber')) {
+                    this.accountToNumber = urlParams.get('accountNumber');
+                }
 
         },
             simulator: function(){
@@ -138,7 +144,7 @@ var app = new Vue({
         this.modal = new bootstrap.Modal(document.getElementById('confirModal'));
         this.okmodal = new bootstrap.Modal(document.getElementById('okModal'));
         this.getData();
-        this.updateParams();
+        //this.updateParams();
     }
 
 })
