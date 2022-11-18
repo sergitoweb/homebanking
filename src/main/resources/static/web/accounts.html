@@ -83,7 +83,7 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <h1 class="display-1">{{ clientInfo.firstName }} {{ clientInfo.lastName }}</h1>
+                        <h1 class="display-4">{{ clientInfo.firstName }} {{ clientInfo.lastName }}</h1>
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -118,7 +118,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{ account.number }} - {{account.typemoney}}</h5>
                                     <p class="card-text"> {{ formatDate(account.creationDate) }}</p>
-                                    <p class="text-center lead account-balance"> ${{ account.balance }} </p>
+                                    <p class="text-center lead account-balance"> {{ account.balance }}{{account.typemoney}} </p>
                                 </div>
                             </div>
                         </a>
