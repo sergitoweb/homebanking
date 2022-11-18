@@ -9,6 +9,8 @@ var app = new Vue({
         criptoAccount: '',
         currentAccount: '',
         operation: "",
+
+        labelAmount: "Elige una operacion",
         amount: 0,
         typeMoney:{},
         typecripto: {},
