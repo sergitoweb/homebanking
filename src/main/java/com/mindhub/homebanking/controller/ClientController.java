@@ -1,5 +1,7 @@
 package com.mindhub.homebanking.controller;
 
+import com.mindhub.homebanking.dtos.AccountDTO;
+import com.mindhub.homebanking.dtos.CardDTO;
 import com.mindhub.homebanking.dtos.ClientDTO;
 import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Card;
@@ -62,18 +64,18 @@ public class ClientController {
 
     //muestra las cuentas de un cliente logueado
     @GetMapping("/current/accounts")
-    public Set<Account> getClientAccount(HttpSession session) {
+    public Set<AccountDTO> getClientAccount(Authentication authentication) {
 
-
+        Client clientelogueado = clientService.findByEmail(authentication.getName()).orElse(null);
         //invocamos al cliente logueado y le pedimos las cuentas...
-        return ((Client) session.getAttribute("client")).getAccounts();
+        return (clientelogueado.getAccounts().stream().map(AccountDTO::new).collect(Collectors.toSet()));
     }
 
     //muestra las card de un cliente logueado
     @GetMapping("/current/cards")
-    public Set<Card> getClientCard(HttpSession session) {
-
-        return ((Client) session.getAttribute("client")).getCards().stream().filter(card -> card.isActive() == true).collect(Collectors.toSet());
+    public Set<CardDTO> getClientCard(Authentication authentication) {
+        Client clientelogueado = clientService.findByEmail(authentication.getName()).orElse(null);
+        return clientelogueado.getCards().stream().filter(card -> card.isActive() == true).map(CardDTO::new).collect(Collectors.toSet());
     }
 
 }

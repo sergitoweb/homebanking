@@ -11,6 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -45,10 +46,11 @@ public class AccountController {
 
     //un cliente logueado puede crear una cuenta y debe indicar el tipo CRY o VIN
     @PostMapping("/clients/current/accounts/{type},{typeMoney}")
-    public ResponseEntity<Object> createAccount(HttpSession session, @PathVariable String type,@PathVariable String typeMoney){
+    public ResponseEntity<Object> createAccount(Authentication authentication, @PathVariable String type, @PathVariable String typeMoney){
 
+        Client clientelogueado = clientService.findByEmail(authentication.getName()).orElse(null);
 
-        String result =  accountService.agregarCuenta((Client) session.getAttribute("client"), AccountType.valueOf(type),MoneyType.valueOf(typeMoney));
+        String result =  accountService.agregarCuenta(clientelogueado, AccountType.valueOf(type),MoneyType.valueOf(typeMoney));
 
 
         if (result.equals("mensaje.exito")){

@@ -61,9 +61,6 @@ public class SharedTransactionService {
                     ". Link de pago: " + linkPago);
         }
 
-
-
-
         return linkPago;
     }
 

@@ -58,7 +58,7 @@ var app = new Vue({
                 axios.post(`/api/transactions/shared?fromAccountNumber=${this.accountFromNumber}&toAccountNumber=${this.accountToNumber}&amount=${this.amount}&description=${this.description}&numberSharedBetwen=${this.numberSharedBetwen}`)
                 .then(response => {
                     this.linkPago = response.data;
-                    this.mensajeLinkPago = '<p style="color:red;">'+ this.linkPago +'</p>';
+                    this.mensajeLinkPago =this.linkPago;
                     this.modal.hide();
                     this.okmodal.show();
                 })
@@ -81,7 +81,8 @@ var app = new Vue({
                 }
             },
             finish: function(){
-                window.location.reload();
+                setTimeout(window.location.href="/web/accounts.html",1500);
+
             },
             signOut: function(){
                 axios.post('/api/logout')

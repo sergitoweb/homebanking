@@ -11,6 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -34,10 +35,10 @@ public class LoanController {
 
 
     @PostMapping("/loans")
-    public ResponseEntity<Object> createLoan(HttpSession session, @RequestBody LoanAplicationDTO loanAplicationDTO){
+    public ResponseEntity<Object> createLoan(Authentication authentication, @RequestBody LoanAplicationDTO loanAplicationDTO){
 
-
-        String result = loanService.makeLoan(loanAplicationDTO, (Client) session.getAttribute("client"));
+        Client clientelogueado = clientService.findByEmail(authentication.getName()).orElse(null);
+        String result = loanService.makeLoan(loanAplicationDTO, clientelogueado);
 
         if (result.equals("mensaje.exito")) {
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.CREATED);

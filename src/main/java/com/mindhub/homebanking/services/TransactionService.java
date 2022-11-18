@@ -66,8 +66,6 @@ public class TransactionService {
             accountOrigin.addTransaction(transaction);
             accountOrigin.setBalance(accountOrigin.getBalance() - amount);
 
-            session.setAttribute("client", clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
-
             transactionRepository.save(transaction);
 
             //crear la transaccion y asignarselo a la cuenta de destino
@@ -129,8 +127,6 @@ public class TransactionService {
                 Transaction transaction = new Transaction(amountArs, description, LocalDateTime.now(), TransactionType.DEBIT);
                 accountOrigin.addTransaction(transaction);
                 accountOrigin.setBalance(accountOrigin.getBalance() - amountArs);
-
-                session.setAttribute("client", clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
 
                 transactionRepository.save(transaction);
 

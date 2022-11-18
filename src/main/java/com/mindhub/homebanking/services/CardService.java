@@ -66,7 +66,7 @@ public class CardService {
 
         List<Integer> cardActualizadas = cardFiltradas.stream().map(card -> cardRepository.updateCardById(card.getId(), false)).collect(Collectors.toList());
         Integer registrosActualizados = cardActualizadas.get(0);
-        session.setAttribute("client", clientRepository.findByEmail(client.getEmail()).orElse(null));
+
         return "mensaje.exito";
     }
 }
