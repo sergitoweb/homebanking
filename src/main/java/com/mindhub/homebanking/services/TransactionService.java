@@ -142,9 +142,9 @@ public class TransactionService {
 
                 if(clientelogueado.isHasTelegram()){
                     notificationService.sendNotification(((Client) session.getAttribute("client")).getEmail(),
-                            "Se ha realizado la compra de " + amountArs + " en "+ tipomoneda + " desde "
-                                    + accountOrigin.getNumber() + " acreditando en la cuenta " +
-                                    accountDestination.getNumber() + "un monto de " + amountCripto + tipomoneda);
+                            "Se ha realizado la compra de " + amountArs + "ARS en "+ tipomoneda + " desde "
+                                    + accountOrigin.getNumber() + ". acreditando en la cuenta " +
+                                    accountDestination.getNumber() + " un monto de " + amountCripto + tipomoneda);
                 }
 
 
@@ -179,8 +179,8 @@ public class TransactionService {
                 if(clientelogueado.isHasTelegram()){
                     notificationService.sendNotification(((Client) session.getAttribute("client")).getEmail(),
                             "Se ha realizado la venta de " + amountCripto + tipomoneda + " desde "
-                                    + accountOrigin.getNumber() + " acreditando en la cuenta " +
-                                    accountDestination.getNumber() + "un monto de " + amountArs);
+                                    + accountOrigin.getNumber() + ". Acreditando en la cuenta " +
+                                    accountDestination.getNumber() + " un monto de " + amountArs);
                 }
 
 

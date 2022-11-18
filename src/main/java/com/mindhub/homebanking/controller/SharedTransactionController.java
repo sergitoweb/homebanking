@@ -38,7 +38,7 @@ public class SharedTransactionController {
         String result = transactionService.makeTransaction(amount,description,fromAccountNumber,toAccountNumber,(Client) session.getAttribute("client"));
 
         if (result.equals("mensaje.exito")) {
-            String linkPago = sharedTransactionService.makeSharedTransaction(amount,numberSharedBetwen, fromAccountNumber, description);
+            String linkPago = sharedTransactionService.makeSharedTransaction(amount,numberSharedBetwen,toAccountNumber, fromAccountNumber, description,(Client) session.getAttribute("client"));
             System.out.println(linkPago);
             return new ResponseEntity<>(linkPago, HttpStatus.CREATED);
         }else {
