@@ -52,14 +52,16 @@ public class SharedTransactionService {
         accountRepository.save(account);
 
         System.out.println("Token: " + tokenId);
+        String linkPago= "http://localhost:8080/web/pay-shared-transfers.html?tokenId=" + tokenId;
 
         if(clientelogueado.isHasTelegram()){
             notificationService.sendNotification(clientelogueado.getEmail(),
                     "Se ha realizado un pago compartido desde " + fromAccountNumber +
-                            " hacia la cuenta " + toAccountNumber + " con monto " + amount);
+                            " hacia la cuenta " + toAccountNumber + " con monto " + amount +
+                    ". Link de pago: " + linkPago);
         }
 
-        String linkPago= "http://localhost:8080/web/pay-shared-transfers.html?tokenId=" + tokenId;
+
 
 
         return linkPago;
