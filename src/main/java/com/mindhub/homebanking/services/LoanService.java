@@ -72,6 +72,13 @@ public class LoanService {
             return "mensaje.destinationAccountNotLogin";
         }
 
+        Account accountDestination = accountRepository.findByNumber(loanAplicationDTO.getToAccountNumber()).orElse(null);
+
+        if(accountDestination.getType().equals(AccountType.CRY)){
+            return "mensaje.account.incompatible";
+        }
+
+
         ClientLoan newclientLoan = new ClientLoan((loanAplicationDTO.getAmount()*1.2), loanAplicationDTO.getPayments(), client, loan);
 
         client.addClientLoan(newclientLoan);
@@ -80,7 +87,7 @@ public class LoanService {
         clientLoanRepository.save(newclientLoan);
 
 
-        Account accountDestination = accountRepository.findByNumber(loanAplicationDTO.getToAccountNumber()).orElse(null);
+
         transactionService.makeTransactionLoan(accountDestination,loanAplicationDTO.getAmount(),loan);
 
         if(client.isHasTelegram()){

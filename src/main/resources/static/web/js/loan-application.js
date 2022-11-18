@@ -6,9 +6,11 @@ var app = new Vue({
         payments: 0,
         paymentsList: [],
         clientAccounts: [],
+        clientAccountsWithOutCripto:[],
         errorToats: null,
         errorMsg: null,
         accountToNumber: "VIN",
+
         amount: 0,
         fees: []
     },
@@ -19,6 +21,7 @@ var app = new Vue({
                 //get loan types ifo
                 this.loanTypes = response[0].data;
                 this.clientAccounts = response[1].data;
+                this.clientAccountsWithOutCripto = this.clientAccounts.filter(cuenta => cuenta.type!="CRY")
             })
             .catch((error) => {
                 this.errorMsg = "Error getting data";

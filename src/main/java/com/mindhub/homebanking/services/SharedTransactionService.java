@@ -56,8 +56,8 @@ public class SharedTransactionService {
 
         if(clientelogueado.isHasTelegram()){
             notificationService.sendNotification(clientelogueado.getEmail(),
-                    "Se ha realizado un pago compartido desde " + fromAccountNumber +
-                            " hacia la cuenta " + toAccountNumber + " con monto " + amount +
+                    "Se ha realizado un pago compartido desde " +  toAccountNumber +
+                            " hacia la cuenta " + fromAccountNumber + " con monto " + amount +
                     ". Link de pago: " + linkPago);
         }
 
