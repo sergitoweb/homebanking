@@ -10,7 +10,7 @@ var app = new Vue({
         currentAccount: '',
         operation: "",
 
-        labelAmount: "Elige una operacion",
+        labelAmount: "choose an operation",
         amount: 0,
         typeMoney:{},
         typecripto: {},
@@ -63,8 +63,8 @@ var app = new Vue({
         },
         transfer: function(){
 
-            if(this.operation == "buy"){//controller buycrypto
-               // this.labelAmount="Enter your amount in ARS";
+            if(this.operation == "buy"){
+
                 axios.post(`/api/crypto/buy?amountArsBuy=${this.amount}&tipomoneda=${this.typecripto.name}&originAccount=${this.currentAccount}&destinationAccount=${this.criptoAccount}`)
                 .then(response => {
                     this.modal.hide();
@@ -75,8 +75,8 @@ var app = new Vue({
                     this.errorToats.show();
                 })
 
-            }else{ //controller sellcripto
-                //this.labelAmount="Enter your amount in COIN";
+            }else{
+
                 console.log(this.criptoAccount +" - "+this.currentAccount)
                                 axios.post(`/api/crypto/sell?amountCriptoSell=${this.amount}&tipomoneda=${this.typecripto.name}&originAccount=${this.criptoAccount}&destinationAccount=${this.currentAccount}`)
                                 .then(response => {
@@ -146,7 +146,7 @@ var app = new Vue({
         this.modal = new bootstrap.Modal(document.getElementById('confirModal'));
         this.okmodal = new bootstrap.Modal(document.getElementById('okModal'));
         this.getData();
-        //this.updateParams();
+
     }
 
 })
