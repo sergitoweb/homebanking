@@ -31,6 +31,9 @@ public class SharedTransactionService {
     private AccountService accountService;
 
     @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
     private TransactionService transactionService;
 
 
@@ -40,7 +43,7 @@ public class SharedTransactionService {
     }
 
 
-    public String makeSharedTransaction(Long amount, int sharedAccounts, String toAccountNumber, String description){
+    public String makeSharedTransaction(Long amount, int sharedAccounts,String fromAccountNumber, String toAccountNumber, String description, Client clientelogueado){
         long amountPerAccount = (long) (amount /  sharedAccounts);
         String tokenId = (UUID.randomUUID()).toString().toUpperCase();
         Account account = accountRepository.findByNumber(toAccountNumber).orElse(null);
@@ -49,9 +52,14 @@ public class SharedTransactionService {
         accountRepository.save(account);
 
         System.out.println("Token: " + tokenId);
-
         String linkPago= "http://localhost:8080/web/pay-shared-transfers.html?tokenId=" + tokenId;
 
+        if(clientelogueado.isHasTelegram()){
+            notificationService.sendNotification(clientelogueado.getEmail(),
+                    "Se ha realizado un pago compartido desde " +  toAccountNumber +
+                            " hacia la cuenta " + fromAccountNumber + " con monto " + amount +
+                    ". Link de pago: " + linkPago);
+        }
 
         return linkPago;
     }
@@ -71,6 +79,13 @@ public class SharedTransactionService {
             accountRepository.save(account);
             sharedTransactionRepository.save(sharedTransaction);
             sharedTransactionAccountRepository.save(sharedTransactionAccount);
+
+            if(clientelogueado.isHasTelegram()){
+                notificationService.sendNotification(clientelogueado.getEmail(),
+                        "Se ha pagado un pago compartido desde " + fromAccountNumber +
+                                " hacia la cuenta " + sharedTransaction.getAccount() + " con monto " + sharedTransaction.getParcialAmount());
+            }
+
             return true;
         }else {
             return false;

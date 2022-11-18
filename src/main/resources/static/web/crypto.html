@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <div id="panel" class="container bg-light" ><!-- contenedor de las cosas -->
+    <div id="panel" class="container bg-light"><!-- contenedor de las cosas -->
         <div class="row mt-5">
             <div class="col-12 col-md-2">
                 <div>
@@ -43,7 +43,7 @@
                     <a href="/web/accounts.html"
                        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                         <img class="menu-logo" src="img/favicon-32x32.png">
-                        <span id="titulo" class="fs-5" >Banco Pasion</span>
+                        <span id="titulo" class="fs-5">Banco Pasion</span>
                     </a>
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
@@ -208,16 +208,17 @@
                 </div>
 
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" v-on:click="changeLabel('Enter your amount in ARS')"
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                           v-on:click="changeLabel('Enter your amount in ARS')"
                            value="buy"
                            v-model="operation">
                     <label class="form-check-label" for="flexRadioDefault1">
                         Buy Crypto
                     </label>
-
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" v-on:click="changeLabel('Enter your amount in COIN')"
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                           v-on:click="changeLabel('Enter your amount in COIN')"
                            value="sell"
                            v-model="operation" checked>
                     <label class="form-check-label" for="flexRadioDefault2">
@@ -226,7 +227,6 @@
                 </div>
                 <br>
                 <div class="modal-footer">
-
                 </div>
             </div>
 

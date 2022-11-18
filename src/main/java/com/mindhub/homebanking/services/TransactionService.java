@@ -29,6 +29,9 @@ public class TransactionService {
     private ClientRepository clientRepository;
 
     @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
     HttpSession session;
 
 @Transactional
@@ -63,8 +66,6 @@ public class TransactionService {
             accountOrigin.addTransaction(transaction);
             accountOrigin.setBalance(accountOrigin.getBalance() - amount);
 
-            session.setAttribute("client", clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
-
             transactionRepository.save(transaction);
 
             //crear la transaccion y asignarselo a la cuenta de destino
@@ -76,6 +77,11 @@ public class TransactionService {
 
             transactionRepository.save(transactiondestination);
 
+            if(clientelogueado.isHasTelegram()){
+                notificationService.sendNotification(((Client) session.getAttribute("client")).getEmail(),
+                        "Se ha realizado una transferencia desde " + fromAccountNumber +
+                                " hacia la cuenta " + toAccountNumber + " con monto " + amount);
+            }
 
             return "mensaje.exito";
         }else{
@@ -122,8 +128,6 @@ public class TransactionService {
                 accountOrigin.addTransaction(transaction);
                 accountOrigin.setBalance(accountOrigin.getBalance() - amountArs);
 
-                session.setAttribute("client", clientRepository.findByEmail(clientelogueado.getEmail()).orElse(null));
-
                 transactionRepository.save(transaction);
 
                 Transaction transactiondestination = new Transaction(amountCripto, description, LocalDateTime.now(), TransactionType.CREDIT);
@@ -131,6 +135,15 @@ public class TransactionService {
                 accountDestination.setBalance(accountDestination.getBalance() + amountCripto);
 
                 transactionRepository.save(transactiondestination);
+
+                if(clientelogueado.isHasTelegram()){
+                    notificationService.sendNotification(((Client) session.getAttribute("client")).getEmail(),
+                            "Se ha realizado la compra de " + amountArs + "ARS en "+ tipomoneda + " desde "
+                                    + accountOrigin.getNumber() + ". acreditando en la cuenta " +
+                                    accountDestination.getNumber() + " un monto de " + amountCripto + tipomoneda);
+                }
+
+
                 return "mensaje.exito";
 
             } else {
@@ -158,6 +171,15 @@ public class TransactionService {
                 accountDestination.setBalance(accountDestination.getBalance() + amountArs);
 
                 transactionRepository.save(transactiondestination);
+
+                if(clientelogueado.isHasTelegram()){
+                    notificationService.sendNotification(((Client) session.getAttribute("client")).getEmail(),
+                            "Se ha realizado la venta de " + amountCripto + tipomoneda + " desde "
+                                    + accountOrigin.getNumber() + ". Acreditando en la cuenta " +
+                                    accountDestination.getNumber() + " un monto de " + amountArs);
+                }
+
+
                 return "mensaje.exito";
 
             } else {

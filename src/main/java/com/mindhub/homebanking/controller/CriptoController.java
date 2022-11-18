@@ -6,12 +6,14 @@ import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.Cripto;
 import com.mindhub.homebanking.models.MoneyType;
 import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.ClientService;
 import com.mindhub.homebanking.services.CriptoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,6 +30,9 @@ public class CriptoController {
 
     @Autowired
     private CriptoService criptoService;
+
+    @Autowired
+    private ClientService clientService;
 
     @Autowired
     private MessageSource mensajes;
@@ -51,13 +56,13 @@ public class CriptoController {
     }
 
     @PostMapping("/crypto/buy")
-    public ResponseEntity<Object> buyCrypto(HttpSession session, @RequestParam float amountArsBuy, @RequestParam String tipomoneda, @RequestParam String originAccount , @RequestParam String destinationAccount ) {
+    public ResponseEntity<Object> buyCrypto(Authentication authentication, @RequestParam float amountArsBuy, @RequestParam String tipomoneda, @RequestParam String originAccount , @RequestParam String destinationAccount ) {
 
         // <-- atributos: num de origen, num destino, monto a comprar, cliente,-->
-
+        Client clientelogueado = clientService.findByEmail(authentication.getName()).orElse(null);
         List<Cripto> cripto = verCotizacion().stream().filter(cripto1 -> cripto1.getName().equals(MoneyType.valueOf(tipomoneda.toUpperCase()))).collect(Collectors.toList());
 
-        String result =criptoService.comprarCripto((Client) session.getAttribute("client"),amountArsBuy,cripto.get(0),MoneyType.valueOf(tipomoneda.toUpperCase()),originAccount,destinationAccount);
+        String result =criptoService.comprarCripto(clientelogueado,amountArsBuy,cripto.get(0),MoneyType.valueOf(tipomoneda.toUpperCase()),originAccount,destinationAccount);
         if (result.equals("mensaje.exito")){
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.OK);
 
@@ -68,12 +73,13 @@ public class CriptoController {
 
 
     @PostMapping("/crypto/sell")
-    public ResponseEntity<Object> sellCrypto(HttpSession session, @RequestParam float amountCriptoSell, @RequestParam String tipomoneda, @RequestParam String originAccount , @RequestParam String destinationAccount) {
+    public ResponseEntity<Object> sellCrypto(Authentication authentication, @RequestParam float amountCriptoSell, @RequestParam String tipomoneda, @RequestParam String originAccount , @RequestParam String destinationAccount) {
 
+        Client clientelogueado = clientService.findByEmail(authentication.getName()).orElse(null);
         // <-- atributos: num de origen, num destino, monto a comprar, cliente,-->
         List<Cripto> cripto = verCotizacion().stream().filter(cripto1 -> cripto1.getName().equals(MoneyType.valueOf(tipomoneda.toUpperCase()))).collect(Collectors.toList());
 
-        String result =criptoService.venderCripto((Client) session.getAttribute("client"),amountCriptoSell,cripto.get(0),MoneyType.valueOf(tipomoneda.toUpperCase()),originAccount, destinationAccount);
+        String result =criptoService.venderCripto(clientelogueado,amountCriptoSell,cripto.get(0),MoneyType.valueOf(tipomoneda.toUpperCase()),originAccount, destinationAccount);
 
         if (result.equals("mensaje.exito")){
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.OK);

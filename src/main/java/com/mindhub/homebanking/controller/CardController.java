@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -32,10 +33,10 @@ public class CardController {
 
     //un cliente logueado puede crear una card
     @PostMapping("/clients/current/cards")
-    public ResponseEntity<Object> createCard(HttpSession session, @Valid @RequestParam CardType cardType, @Valid @RequestParam CardColor cardColor){
+    public ResponseEntity<Object> createCard(Authentication authentication, @Valid @RequestParam CardType cardType, @Valid @RequestParam CardColor cardColor){
 
 
-        Client clienteLogueado =  ((Client) session.getAttribute("client"));
+        Client clienteLogueado =  clientService.findByEmail(authentication.getName()).orElse(null);
 
 
         //List<Card> cardFiltradas = clienteLogueado.getCards().stream().filter(card -> card.getType()==cardType).collect(Collectors.toList());
@@ -50,9 +51,9 @@ public class CardController {
     }
 
     @DeleteMapping("/clients/current/cards")
-    public ResponseEntity<Object> deleteCard(HttpSession session, @NotNull @RequestParam String number){
+    public ResponseEntity<Object> deleteCard(Authentication authentication, @NotNull @RequestParam String number){
 
-        Client clienteLogueado =  ((Client) session.getAttribute("client"));
+        Client clienteLogueado =  clientService.findByEmail(authentication.getName()).orElse(null);
 
         String result =cardService.deleteCard(clienteLogueado,number);
         if (result.equals("mensaje.exito")){
