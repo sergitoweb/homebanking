@@ -40,10 +40,6 @@ public class LoanController {
         String result = loanService.makeLoan(loanAplicationDTO, (Client) session.getAttribute("client"));
 
         if (result.equals("mensaje.exito")) {
-            if(((Client) session.getAttribute("client")).isHasTelegram()){
-                notificationService.sendNotification(((Client) session.getAttribute("client")).getEmail(),
-                        "El prestamo solicitado para " + loanAplicationDTO.getToAccountNumber() + " ha sido aprobado y depositado.");
-            }
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.CREATED);
         }else {
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);

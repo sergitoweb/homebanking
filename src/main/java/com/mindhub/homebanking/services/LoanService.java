@@ -5,6 +5,8 @@ import com.mindhub.homebanking.dtos.LoanAplicationDTO;
 import com.mindhub.homebanking.dtos.LoanDTO;
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.*;
+import org.aspectj.weaver.ast.Not;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,9 @@ public class LoanService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Autowired
     HttpSession session;
@@ -78,7 +83,10 @@ public class LoanService {
         Account accountDestination = accountRepository.findByNumber(loanAplicationDTO.getToAccountNumber()).orElse(null);
         transactionService.makeTransactionLoan(accountDestination,loanAplicationDTO.getAmount(),loan);
 
-
+        if(client.isHasTelegram()){
+            notificationService.sendNotification(((Client) session.getAttribute("client")).getEmail(),
+                    "El prestamo solicitado para " + loanAplicationDTO.getToAccountNumber() + " ha sido aprobado y depositado.");
+        }
         return "mensaje.exito";
     }
 

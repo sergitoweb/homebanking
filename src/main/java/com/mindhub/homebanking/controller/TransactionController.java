@@ -38,13 +38,6 @@ public class TransactionController {
         String result = transactionService.makeTransaction(amount,description,fromAccountNumber,toAccountNumber,(Client) session.getAttribute("client"));
 
         if (result.equals("mensaje.exito")) {
-
-            if(((Client) session.getAttribute("client")).isHasTelegram()){
-                notificationService.sendNotification(((Client) session.getAttribute("client")).getEmail(),
-                        "Se ha realizado una transferencia desde " + fromAccountNumber +
-                                " hacia la cuenta " + toAccountNumber + " con monto " + amount);
-            }
-
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.CREATED);
         }else {
             return new ResponseEntity<>(mensajes.getMessage(result, null, LocaleContextHolder.getLocale()), HttpStatus.FORBIDDEN);
