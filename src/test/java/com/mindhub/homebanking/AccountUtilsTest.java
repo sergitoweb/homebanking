@@ -17,5 +17,14 @@ public class AccountUtilsTest {
         String cardNumber = AccountUtils.getAccountNumber(AccountType.VIN);
         assertThat(cardNumber,is(not(emptyOrNullString())));
 
+
+
+    }
+
+    @Test
+    public void accountNumberIsFalse(){
+        String cardNumber = AccountUtils.getAccountNumber(AccountType.CRY);
+        assertThat(cardNumber,is(not(emptyOrNullString())));
+
     }
 }

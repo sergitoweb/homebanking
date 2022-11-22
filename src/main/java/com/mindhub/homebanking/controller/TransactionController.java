@@ -2,9 +2,7 @@ package com.mindhub.homebanking.controller;
 
 
 import com.mindhub.homebanking.models.Client;
-import com.mindhub.homebanking.services.ClientService;
-import com.mindhub.homebanking.services.NotificationService;
-import com.mindhub.homebanking.services.TransactionService;
+import com.mindhub.homebanking.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -12,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpSession;
+
 import javax.validation.Valid;
 
 @RestController

@@ -1,7 +1,6 @@
 package com.mindhub.homebanking.repositories;
 
-import com.mindhub.homebanking.dtos.SharedTransactionDTO;
-import com.mindhub.homebanking.models.Client;
+
 import com.mindhub.homebanking.models.SharedTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;

@@ -35,6 +35,8 @@ public class HomebankingApplication {
 
 	@Autowired
 	private CardRepository cardRepository;
+	@Autowired
+	private SharedTransactionRepository sharedTransactionRepository;
 
 
 	@Bean
@@ -52,6 +54,9 @@ public class HomebankingApplication {
 			Account account3 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),12000,"VIN007",AccountType.VIN,MoneyType.ARS);
 			Account account4 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),36000,"VIN008",AccountType.VIN,MoneyType.ARS);
 
+			//para test cripto a cliente2 - sergio noir
+			Account cuentacripto1 = new Account(LocalDateTime.parse("2021-09-08T00:00:00"),1,"CRY001",AccountType.CRY,MoneyType.DAI);
+			Account account5 = new Account(LocalDateTime.parse("2022-09-08T00:00:00"),10000,"VIN010",AccountType.VIN,MoneyType.ARS);
 
 			LocalDateTime ldt = LocalDateTime.parse("2025-09-08T00:00:00");
 			Transaction t1 = new Transaction(2000, "Transferencia recibida", ldt, TransactionType.CREDIT);
@@ -63,6 +68,8 @@ public class HomebankingApplication {
 			Transaction t7 = new Transaction(700, "Transferencia recibida", ldt, TransactionType.CREDIT);
 			Transaction t8 = new Transaction(2000, "Compra tienda xx", ldt, TransactionType.DEBIT);
 
+			SharedTransaction st1 = new SharedTransaction(account3,1000,500,2,"F8607AFF-48E7-4250-ADAF-0BEA7898FE7B","Shared Transaction");
+
 			account1.addTransaction(t1); // transactions
 			account1.addTransaction(t2); // transactions
 			account2.addTransaction(t3); // transactions
@@ -71,6 +78,8 @@ public class HomebankingApplication {
 			account3.addTransaction(t6); // transactions
 			account4.addTransaction(t7); // transactions
 			account4.addTransaction(t8); // transactions
+
+			account4.addSharedTransaction(st1);
 
 			account1.setClient(client1);
 			account2.setClient(client1);
@@ -82,6 +91,9 @@ public class HomebankingApplication {
 			client3.addAccount(account3);
 			client3.addAccount(account3);
 			client3.addAccount(account4);
+			client2.addAccount(cuentacripto1);
+			client2.addAccount(account5);
+
 
 			Loan loan1 = new Loan("Hipotecario", 500000.0);
 			Loan loan2 = new Loan("Personal", 100000.0);
@@ -147,6 +159,10 @@ public class HomebankingApplication {
 			transactionRepository.save(t6);
 			transactionRepository.save(t7);
 			transactionRepository.save(t8);
+
+			sharedTransactionRepository.save(st1);
+
+
 
 		};
 	}
