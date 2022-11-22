@@ -1,4 +1,4 @@
-package com.mindhub.homebanking.services;
+package com.mindhub.homebanking.services.implement;
 
 import com.mindhub.homebanking.dtos.AccountDTO;
 import com.mindhub.homebanking.models.Account;
@@ -6,6 +6,7 @@ import com.mindhub.homebanking.models.AccountType;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.MoneyType;
 import com.mindhub.homebanking.repositories.AccountRepository;
+import com.mindhub.homebanking.services.AccountService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -17,7 +18,7 @@ import static com.mindhub.homebanking.utils.AccountUtils.getAccountNumber;
 import static java.util.stream.Collectors.toList;
 
 @Service
-public class AccountServiceImp implements AccountService{
+public class AccountServiceImp implements AccountService {
 
 
     private AccountRepository accountRepository;

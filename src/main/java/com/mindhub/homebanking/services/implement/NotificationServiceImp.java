@@ -1,6 +1,9 @@
-package com.mindhub.homebanking.services;
+package com.mindhub.homebanking.services.implement;
 
 import com.mindhub.homebanking.models.Client;
+import com.mindhub.homebanking.services.ClientService;
+import com.mindhub.homebanking.services.NotificationService;
+import com.mindhub.homebanking.services.TelegramIdService;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

@@ -1,7 +1,7 @@
 package com.mindhub.homebanking.configurations;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.ClientRepository;
-import com.mindhub.homebanking.services.NotificationServiceImp;
+import com.mindhub.homebanking.services.implement.NotificationServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

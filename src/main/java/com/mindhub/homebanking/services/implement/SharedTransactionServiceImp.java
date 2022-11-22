@@ -1,4 +1,4 @@
-package com.mindhub.homebanking.services;
+package com.mindhub.homebanking.services.implement;
 
 import com.mindhub.homebanking.dtos.SharedTransactionDTO;
 import com.mindhub.homebanking.models.Account;
@@ -8,6 +8,10 @@ import com.mindhub.homebanking.models.SharedTransactionAccount;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.SharedTransactionAccountRepository;
 import com.mindhub.homebanking.repositories.SharedTransactionRepository;
+import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.NotificationService;
+import com.mindhub.homebanking.services.SharedTransactionService;
+import com.mindhub.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

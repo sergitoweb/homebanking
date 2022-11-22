@@ -1,14 +1,15 @@
-package com.mindhub.homebanking.services;
+package com.mindhub.homebanking.services.implement;
 
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.TelegramId;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.repositories.TelegramIdRepository;
+import com.mindhub.homebanking.services.TelegramIdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TelegramIdServiceImp implements TelegramIdService{
+public class TelegramIdServiceImp implements TelegramIdService {
 
 
     private TelegramIdRepository telegramIdRepository;

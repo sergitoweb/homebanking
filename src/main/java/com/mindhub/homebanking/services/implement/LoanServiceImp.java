@@ -1,9 +1,13 @@
-package com.mindhub.homebanking.services;
+package com.mindhub.homebanking.services.implement;
 
 import com.mindhub.homebanking.dtos.LoanAplicationDTO;
 import com.mindhub.homebanking.dtos.LoanDTO;
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.*;
+import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.LoanService;
+import com.mindhub.homebanking.services.NotificationService;
+import com.mindhub.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +18,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @Service
-public class LoanServiceImp implements LoanService{
+public class LoanServiceImp implements LoanService {
 
 
     private LoanRepository loanRepository;

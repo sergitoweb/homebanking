@@ -1,8 +1,9 @@
-package com.mindhub.homebanking.services;
+package com.mindhub.homebanking.services.implement;
 
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.CardRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.services.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import static com.mindhub.homebanking.utils.CardUtils.getCardCvv;
 import static com.mindhub.homebanking.utils.CardUtils.getCardNumber;
 
 @Service
-public class CardServiceImp implements CardService{
+public class CardServiceImp implements CardService {
 
 
     private CardRepository cardRepository;
