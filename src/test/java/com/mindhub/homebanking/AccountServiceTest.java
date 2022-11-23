@@ -13,8 +13,10 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -68,14 +70,14 @@ public class AccountServiceTest {
     public void testValidarCuenta2(){
         when(accountRepository.findByNumber("VIN005")).thenReturn(Optional.of(cuentas.get(0)));
         Client client = mock(Client.class);
+        when(client.getAccounts()).thenReturn(new HashSet<>(cuentas));
         assertTrue(accountService.validarCuenta(client,"VIN005"));
     }
 
     @Test
     public void testValidarAmount(){
         when(accountRepository.findByNumber("VIN005")).thenReturn(Optional.of(cuentas.get(0)));
-        Boolean result = accountService.validarAmount("VIN005", 10001f);
-        assertNotNull(result);
+        boolean result = accountService.validarAmount("VIN005", 100f);
         assertTrue(result);
     }
 

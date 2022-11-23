@@ -71,7 +71,7 @@ public class NotificationServiceImp extends TelegramLongPollingBot implements No
     }
 
     @Override
-    public void sendMessage(String message, long chatId){
+    public void sendMessage(String message, long chatId) {
         // Se crea un objeto mensaje
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
