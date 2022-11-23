@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -25,8 +26,8 @@ public class CardServiceTest {
 
     List<Card> cards = Arrays.asList(
             new Card("Tomas Quinteros", "3325-6745-7876-4445", 990, LocalDateTime.parse("2023-09-08T00:00:00"), LocalDateTime.parse("2022-09-08T00:00:00"), CardType.CREDIT, CardColor.GOLD),
-            new Card("Admin", "1925-6745-7876-4445", 222, LocalDateTime.parse("2023-09-08T00:00:00"), LocalDateTime.parse("2022-09-08T00:00:00"), CardType.CREDIT, CardColor.SILVER),
-            new Card("Admin", "8889-6745-7876-4445", 350, LocalDateTime.parse("2023-09-08T00:00:00"), LocalDateTime.parse("2022-09-08T00:00:00"), CardType.DEBIT, CardColor.TITANIUM)
+            new Card("Admin", "1925-6745-7876-4445", 222, LocalDateTime.parse("2023-09-08T00:00:00"), LocalDateTime.parse("2022-09-08T00:00:00"), CardType.CREDIT, CardColor.GOLD),
+            new Card("Admin", "8889-6745-7876-4445", 350, LocalDateTime.parse("2023-09-08T00:00:00"), LocalDateTime.parse("2022-09-08T00:00:00"), CardType.CREDIT, CardColor.GOLD)
     );
 
     @Test
@@ -43,10 +44,9 @@ public class CardServiceTest {
         //Ver de agregar las tres tarjetas para que a la cuarta falle
         when(cardRepository.save(cards.get(0))).thenReturn(cards.get(0));
         Client client = mock(Client.class);
-        System.out.println(client.getCards());
-        String result = cardService.agregarCard(client,CardColor.GOLD, CardType.CREDIT);
-        String result2 = cardService.agregarCard(client,CardColor.GOLD, CardType.CREDIT);
-        String result3 = cardService.agregarCard(client,CardColor.GOLD, CardType.CREDIT);
+
+        when(client.getCards()).thenReturn(cards.stream().collect(Collectors.toSet()));
+
         String result4 = cardService.agregarCard(client,CardColor.GOLD, CardType.CREDIT);
         assertNotNull(result4);
         assertEquals("mensaje.limit.card.number",result4);

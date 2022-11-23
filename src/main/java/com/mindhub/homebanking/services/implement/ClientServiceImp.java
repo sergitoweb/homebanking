@@ -43,7 +43,7 @@ public class ClientServiceImp implements ClientService {
     public String agregarCliente(String firstName, String lastName, String email, String password){
 
         //si el email ya esta cargado, devuelve email en uso
-        if (clientRepository.findByEmail(firstName).orElse(null) !=  null) {
+        if (clientRepository.findByEmail(email).orElse(null) !=  null) {
             return "mensaje.emailClient.fail";
         }else{
             Client newclient = new Client(firstName, lastName, email, passwordEncoder().encode(password));

@@ -13,13 +13,11 @@ public class CardUtilsTests {
     public void cardNumberIsCreated(){
         String cardNumber = CardUtils.getCardNumber();
         assertThat(cardNumber,is(not(emptyOrNullString())));
-
     }
 
     @Test
     public void cardCvvIsCreated(){
         int cvv = CardUtils.getCardCvv();
         assertThat(cvv, is(not(nullValue())));
-
     }
 }
