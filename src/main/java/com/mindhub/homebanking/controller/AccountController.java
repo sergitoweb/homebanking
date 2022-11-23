@@ -2,7 +2,6 @@ package com.mindhub.homebanking.controller;
 import com.mindhub.homebanking.dtos.AccountDTO;
 import com.mindhub.homebanking.models.AccountType;
 import com.mindhub.homebanking.models.Client;
-import com.mindhub.homebanking.models.Cripto;
 import com.mindhub.homebanking.models.MoneyType;
 import com.mindhub.homebanking.services.AccountService;
 import com.mindhub.homebanking.services.ClientService;
@@ -15,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 

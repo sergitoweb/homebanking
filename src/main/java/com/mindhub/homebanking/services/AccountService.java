@@ -5,80 +5,27 @@ import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.AccountType;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.MoneyType;
-import com.mindhub.homebanking.repositories.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.mindhub.homebanking.utils.AccountUtils.getAccountNumber;
-import static java.util.stream.Collectors.toList;
+public interface AccountService {
 
-@Service
-public class AccountService {
+    public String agregarCuenta(Client client, AccountType type, MoneyType tipomoneda);
 
-    @Autowired
-    private AccountRepository accountRepository;
+    public Optional<Account> getAccountById( long id);
 
-    public String agregarCuenta(Client client, AccountType type, MoneyType tipomoneda) {
+    public List<AccountDTO> showAll();
 
-        if(type == null){
-            return "mensaje.type.fail";
-        }
+    public boolean validarCuenta(String numberAccount);
 
-        if((type.equals(AccountType.VIN) & (!tipomoneda.equals(MoneyType.ARS)))){
-            return "mensaje.typemoney.fail";
-        }
+    public boolean validarCuenta(Client client, String number);
 
-        //si el cliente logueado tiene menos de 3 cuentas me deja crear una mas...
-        if (client.getAccounts().size()<3) {
-            //genero aleatoriamente el numero de cuenta y concateno
-            String numCuenta = getAccountNumber(type);
+    public boolean validarAmount(String number, float amount);
 
-            Account newAccount = new Account(LocalDateTime.now(), 0.0, numCuenta, type, tipomoneda);
+    public Account obtenerCuenta(String number);
 
-            //asignamos el cliente logueado a la cuenta y viceversa
-            newAccount.setClient(client);
-            client.addAccount(newAccount);
-
-            accountRepository.save(newAccount);
-            return "mensaje.exito";
-        }else{
-            return "mensaje.limit.account.number";
-        }
-    }
-
-
-
-    public Optional<Account> getAccountById(@PathVariable long id){
-        return accountRepository.findById(id);
-    }
-
-    public List<AccountDTO> showAll() {
-        return accountRepository.findAll().stream().map(AccountDTO::new).collect(toList());
-    }
-
-
-    public boolean validarCuenta(String numberAccount){
-        return !(accountRepository.findByNumber(numberAccount).orElse(null)==null);
-    }
-
-    public boolean validarCuenta(Client client, String number){
-        return client.getAccounts().stream().anyMatch(account -> account.getNumber().equals(number));
-    }
-
-    public boolean validarAmount(String number, float amount){
-        Account cuenta = accountRepository.findByNumber(number).orElse(null);
-        double newbalance = cuenta.getBalance();
-        return newbalance>=(double) amount;
-    }
-
-    public Account obtenerCuenta(String number){
-        return accountRepository.findByNumber(number).orElse(null);
-    }
 
 
 }

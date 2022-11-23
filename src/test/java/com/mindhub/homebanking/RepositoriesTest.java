@@ -40,6 +40,9 @@ public class RepositoriesTest {
     @Autowired
     CardRepository cardRepository;
 
+    @Autowired
+    SharedTransactionRepository sharedTransactionRepository;
+
     @MockBean
     PasswordEncoder passwordEncoder;
 
@@ -59,17 +62,17 @@ public class RepositoriesTest {
 
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testFindAllClients(){
         List<Client> clients = clientRepository.findAll();
         assertFalse(clients.isEmpty());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testFindClientById() {
         Optional<Client> client = clientRepository.findById(1L);
         assertTrue(client.isPresent());
-        assertEquals("tomas", client.orElseThrow().getFirstName());
+        assertEquals("Enzo", client.orElseThrow().getFirstName());
     }
 
     @org.junit.jupiter.api.Test
@@ -112,13 +115,13 @@ public class RepositoriesTest {
         assertEquals("Hipotecario", loan.orElseThrow().getName());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testFindAllClientLoan(){
         List<ClientLoan> clientLoans =clientLoanRepository.findAll();
         assertFalse(clientLoans.isEmpty());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testFindClientLoanById() {
         Optional<ClientLoan> clientLoan = clientLoanRepository.findById(1L);
         assertTrue(clientLoan.isPresent());
@@ -126,18 +129,30 @@ public class RepositoriesTest {
         assertEquals(60, clientLoan.orElseThrow().getPayments());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testFindCardAll(){
         List<Card> cards = cardRepository.findAll();
         assertFalse(cards.isEmpty());
 
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testFindCardById(){
         Optional<Card> card = cardRepository.findById(1L);
         assertTrue(card.isPresent());
         assertEquals(1L, card.orElseThrow().getClient().getId());
     }
+   @Test
+    void testFindByTokenId() {
+        Optional<SharedTransaction> sharedTransaction = sharedTransactionRepository.findByTokenId("F8607AFF-48E7-4250-ADAF-0BEA7898FE7B");
+        assertTrue(sharedTransaction.isPresent());
+        assertEquals("F8607AFF-48E7-4250-ADAF-0BEA7898FE7B", sharedTransaction.orElseThrow().getTokenId());
+    }
+    @Test
+    void testFindAllSharedTransactions(){
+        List<SharedTransaction> sharedTransactions = sharedTransactionRepository.findAll();
+        assertFalse(sharedTransactions.isEmpty());
+    }
+
 
 }
