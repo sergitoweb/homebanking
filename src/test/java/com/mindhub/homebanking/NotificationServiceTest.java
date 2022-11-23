@@ -1,5 +1,6 @@
 package com.mindhub.homebanking;
 
+import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.services.ClientService;
 import com.mindhub.homebanking.services.NotificationService;
 import com.mindhub.homebanking.services.TelegramIdService;
@@ -24,13 +25,40 @@ public class NotificationServiceTest {
 
 
     @Test
-    public void testOnUpdateReceived() {
+    public void testOnUpdateReceived1() {
         Update update = mock(Update.class);
         Message message = mock(Message.class);
         when(update.getMessage()).thenReturn(message);
         when(message.getText()).thenReturn("Mensaje test");
         when(message.getChatId()).thenReturn(1l);
         when(telegramIdService.checkId(1l)).thenReturn(-1);
+
+        notificationService.onUpdateReceived(update);
+    }
+
+    @Test
+    public void testOnUpdateReceived2() {
+        Update update = mock(Update.class);
+        Message message = mock(Message.class);
+        when(update.getMessage()).thenReturn(message);
+        when(message.getText()).thenReturn("Mensaje test");
+        when(message.getChatId()).thenReturn(1l);
+        when(telegramIdService.checkId(1l)).thenReturn(1);
+
+        notificationService.onUpdateReceived(update);
+    }
+
+    @Test
+    public void testOnUpdateReceived3() {
+        Update update = mock(Update.class);
+        Message message = mock(Message.class);
+        when(update.getMessage()).thenReturn(message);
+        when(message.getText()).thenReturn("Mensaje test");
+        when(message.getChatId()).thenReturn(1l);
+        when(telegramIdService.checkId(1l)).thenReturn(0);
+        Client client = mock(Client.class);
+        when(client.getFirstName()).thenReturn("Prueba");
+        when(telegramIdService.getUserTelegram(1l)).thenReturn(client);
 
         notificationService.onUpdateReceived(update);
     }
