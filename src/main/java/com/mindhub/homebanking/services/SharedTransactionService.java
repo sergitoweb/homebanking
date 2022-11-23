@@ -11,9 +11,6 @@ import com.mindhub.homebanking.repositories.SharedTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.util.UUID;
 
 @Service
