@@ -37,10 +37,10 @@ public class SharedTransactionController {
     public ResponseEntity<?> createSharedTransaction(Authentication authentication, @Valid @RequestParam long amount, @Valid @RequestParam String description, @Valid @RequestParam String fromAccountNumber, @Valid @RequestParam String toAccountNumber, @RequestParam int numberSharedBetwen){
 
         Client clientelogueado = clientService.findByEmail(authentication.getName()).orElse(null);
-        String result = transactionService.makeTransaction(amount,description,fromAccountNumber,toAccountNumber,clientelogueado);
+        String result = transactionService.makeTransaction(amount,"Pago compartido"+" "+description,fromAccountNumber,toAccountNumber,clientelogueado);
 
         if (result.equals("mensaje.exito")) {
-            String linkPago = sharedTransactionService.makeSharedTransaction(amount,numberSharedBetwen,toAccountNumber, fromAccountNumber, description,clientelogueado);
+            String linkPago = sharedTransactionService.makeSharedTransaction(amount,numberSharedBetwen,toAccountNumber, fromAccountNumber, "Pago compartido"+" "+description,clientelogueado);
 
             return new ResponseEntity<>(linkPago, HttpStatus.CREATED);
         }else {
