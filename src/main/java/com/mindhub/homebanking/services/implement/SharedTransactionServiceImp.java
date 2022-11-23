@@ -66,7 +66,7 @@ public class SharedTransactionServiceImp implements SharedTransactionService {
         accountRepository.save(account);
 
         System.out.println("Token: " + tokenId);
-        String linkPago= "http://localhost:8080/web/pay-shared-transfers.html?tokenId=" + tokenId;
+        String linkPago= "https://bancopasion.up.railway.app/web/pay-shared-transfers.html?tokenId=" + tokenId;
 
         if(clientelogueado.isHasTelegram()){
             notificationService.sendNotification(clientelogueado.getEmail(),
